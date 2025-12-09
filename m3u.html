@@ -8,10 +8,12 @@
         :root { --primary: #0066cc; --bg: #f4f6f8; --white: #ffffff; }
         body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; color: #333; display: flex; flex-direction: column; min-height: 100vh;}
         
-        /* 導覽列 */
+        /* 導覽列設定 */
         nav { background: var(--white); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .logo { color: var(--primary); font-weight: bold; font-size: 1.2rem; text-decoration: none; }
-        .nav-links { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+        
+        /* ★★★ 強制橫排，買個保險 ★★★ */
+        .nav-links { display: flex; align-items: center; gap: 15px; flex-wrap: nowrap !important; }
         .nav-links a { text-decoration: none; color: #555; font-weight: 500; font-size: 0.9rem; white-space: nowrap; } 
         select.lang-switch { padding: 5px; border-radius: 5px; border: 1px solid #ddd; cursor: pointer; }
         
@@ -29,10 +31,12 @@
         /* SEO 文章區塊樣式 */
         .seo-section { margin-top: 40px; background: white; padding: 30px; border-radius: 12px; text-align: left; line-height: 1.8; color: #444; }
         .seo-section h2 { color: var(--primary); margin-top: 0; }
-        .seo-content { display: none; } /* 預設隱藏所有文章，靠 JS 打開 */
+        .seo-content { display: none; } /* 預設隱藏 */
         
         footer { text-align: center; padding: 20px; color: #888; margin-top: auto; }
-        @media (max-width: 768px) { nav { flex-direction: column; gap: 10px; } .nav-links { justify-content: center; } }
+        
+        /* 手機版適配 */
+        @media (max-width: 600px) { nav { flex-direction: column; gap: 10px; } .nav-links { justify-content: center; } }
     </style>
 </head>
 <body>
@@ -204,41 +208,33 @@
         };
 
         function setLanguage(lang) {
-            // 防呆
             if (!translations[lang]) lang = 'en';
             try { localStorage.setItem('lang', lang); } catch (e) {}
             
-            // 更新下拉選單
             const select = document.querySelector('.lang-switch');
             if(select) select.value = lang;
             
-            // 1. 更新短文字 (介面)
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if(translations[lang][key]) el.innerText = translations[lang][key];
             });
 
-            // 2. 更新 SEO 文章 (顯示對應語言，隱藏其他)
-            // 先把所有文章隱藏
+            // SEO 文章切換
             document.querySelectorAll('.seo-content').forEach(el => {
                 el.style.display = 'none';
             });
-            // 再把選到的語言顯示出來
             const targetSeo = document.getElementById('seo-' + lang);
             if (targetSeo) {
                 targetSeo.style.display = 'block';
             } else {
-                // 如果找不到對應語言的文章，預設顯示英文
                 document.getElementById('seo-en').style.display = 'block';
             }
         }
         
-        // 初始化
         const savedLang = localStorage.getItem('lang') || 'en';
         document.getElementById("year").innerText = new Date().getFullYear();
         setLanguage(savedLang);
 
-        // 功能邏輯
         function convertM3U() {
             const input = document.getElementById('input-content').value;
             const format = document.querySelector('input[name="format"]:checked').value;
@@ -256,6 +252,7 @@
             for (let i = 0; i < lines.length; i++) {
                 let line = lines[i].trim();
                 if (!line) continue;
+
                 if (line.startsWith("#EXTINF:")) {
                     let comma = line.lastIndexOf(',');
                     currentName = comma !== -1 ? line.substring(comma + 1).trim() : "Untitled";
