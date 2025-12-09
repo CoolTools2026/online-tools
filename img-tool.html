@@ -3,49 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Converter & Compressor</title>
+    <title>Image Converter & Compressor - JPG/PNG/WEBP</title>
     <style>
         :root { --primary: #0066cc; --bg: #f4f6f8; --white: #ffffff; }
         body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; color: #333; display: flex; flex-direction: column; min-height: 100vh;}
         
-        /* --- 導覽列核心設定 --- */
-        nav { 
-            background: var(--white); 
-            padding: 15px 5%; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
-        }
-        
+        /* 導覽列設定 */
+        nav { background: var(--white); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .logo { color: var(--primary); font-weight: bold; font-size: 1.2rem; text-decoration: none; }
         
-        /* ★★★ 這裡做了強力修正 ★★★ */
-        .nav-links { 
-            display: flex !important;        /* 強制啟用 Flex 排版 */
-            flex-direction: row !important;  /* 強制橫向排列 */
-            align-items: center !important;  /* 強制垂直置中 */
-            gap: 15px; 
-            white-space: nowrap;             /* 禁止文字換行 */
-        }
+        /* 強制橫向排列，防止跑版 */
+        .nav-links { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+        .nav-links a { text-decoration: none; color: #555; font-weight: 500; font-size: 0.9rem; white-space: nowrap; }
+        select.lang-switch { padding: 5px; border-radius: 5px; border: 1px solid #ddd; cursor: pointer; } 
         
-        .nav-links a { 
-            text-decoration: none; 
-            color: #555; 
-            font-weight: 500; 
-            font-size: 0.9rem; 
-        }
-        
-        /* 語言選單樣式 */
-        select.lang-switch { 
-            padding: 5px; 
-            border-radius: 5px; 
-            border: 1px solid #ddd; 
-            cursor: pointer; 
-            margin: 0; /* 清除可能的外距 */
-        } 
-        
-        /* --- 其他內容樣式 --- */
         .container { max-width: 800px; margin: 40px auto; padding: 0 20px; flex: 1; width: 100%; box-sizing: border-box; }
         .card { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         
@@ -63,13 +34,14 @@
         #preview-img { max-width: 100%; margin-top: 20px; display: none; border-radius: 8px; border: 1px solid #ddd; }
         
         .ad-slot { background: #f0f0f0; height: 100px; margin: 20px 0; display: flex; align-items: center; justify-content: center; color: #999; }
-        .seo-content { margin-top: 40px; background: white; padding: 30px; border-radius: 12px; }
-        footer { text-align: center; padding: 20px; color: #888; margin-top: auto; }
         
-        /* 手機版：螢幕真的很小時才允許變直排，保持美觀 */
-        @media (max-width: 400px) { 
-            nav { flex-direction: column; gap: 10px; } 
-        }
+        /* SEO 文章區塊樣式 */
+        .seo-section { margin-top: 40px; background: white; padding: 30px; border-radius: 12px; text-align: left; line-height: 1.8; color: #444; }
+        .seo-section h2 { color: var(--primary); margin-top: 0; }
+        .seo-content { display: none; } /* 預設隱藏，靠 JS 控制顯示哪一種語言 */
+
+        footer { text-align: center; padding: 20px; color: #888; margin-top: auto; }
+        @media (max-width: 768px) { nav { flex-direction: column; gap: 10px; } .nav-links { justify-content: center; } }
     </style>
 </head>
 <body>
@@ -120,38 +92,93 @@
         </div>
 
         <div class="ad-slot">[AdSense Space]</div>
-        <div class="seo-content" style="line-height: 1.8; color: #444;">
-            <h2 data-i18n="seo_title">Free Online Image Converter & Compressor - JPG, PNG, WEBP</h2>
-            <p>Optimizing images is crucial for website speed and storage management. Our <strong>Free Image Converter</strong> allows you to switch formats between JPG, PNG, and WEBP instantly. More importantly, it features a built-in <strong>Image Compressor</strong> to reduce file size without losing visible quality.</p>
 
-            <h3>Supported Formats Explained</h3>
-            <ul>
-                <li><strong>JPG/JPEG:</strong> The most popular format for photography. It offers a great balance between file size and quality but does not support transparency.</li>
-                <li><strong>PNG:</strong> Perfect for logos, icons, and graphics that require <strong>transparent backgrounds</strong>. Files are usually larger but retain lossless quality.</li>
-                <li><strong>WEBP:</strong> The modern standard developed by Google. WEBP images are typically <strong>30% smaller</strong> than JPGs with the same quality, making them essential for faster web loading speeds (SEO).</li>
-            </ul>
+        <div class="seo-section">
+            
+            <div id="seo-en" class="seo-content">
+                <h2>Free Online Image Converter & Compressor - JPG, PNG, WEBP</h2>
+                <p>Optimizing images is crucial for website speed. Our <strong>Free Image Converter</strong> allows you to switch formats between JPG, PNG, and WEBP instantly. It also features a built-in <strong>Image Compressor</strong> to reduce file size without losing quality.</p>
+                <h3>Why Compress Images?</h3>
+                <ul>
+                    <li><strong>Faster Loading:</strong> Improve SEO rankings with lighter images.</li>
+                    <li><strong>Save Space:</strong> Reduce storage usage on your device.</li>
+                    <li><strong>Privacy:</strong> We process images locally in your browser. No uploads.</li>
+                </ul>
+            </div>
 
-            <h3>Why Compress Images?</h3>
-            <p>Large image files slow down websites and consume mobile data. By using the <strong>Quality Slider</strong> in our tool, you can significantly reduce the file size (e.g., from 5MB to 500KB) before uploading or sharing. This helps in:</p>
-            <ol>
-                <li><strong>Faster Page Load Times:</strong> Improve your Core Web Vitals and SEO rankings.</li>
-                <li><strong>Saving Storage Space:</strong> Store more photos on your phone or cloud drive.</li>
-                <li><strong>Easier Sharing:</strong> Send images via email or WhatsApp without hitting attachment limits.</li>
-            </ol>
+            <div id="seo-zh-TW" class="seo-content">
+                <h2>免費線上圖片轉檔與壓縮工具 (JPG/PNG/WEBP)</h2>
+                <p>圖片最佳化對於網站速度至關重要。我們的<strong>免費圖片轉檔器</strong>讓您可以瞬間在 JPG、PNG 和 WEBP 格式之間轉換。同時內建<strong>圖片壓縮功能</strong>，在不損失畫質的情況下大幅縮小檔案體積。</p>
+                <h3>為什麼需要壓縮圖片？</h3>
+                <ul>
+                    <li><strong>加快載入速度：</strong> 較小的圖片能提升網頁開啟速度與 SEO 排名。</li>
+                    <li><strong>節省空間：</strong> 減少手機或硬碟的儲存空間佔用。</li>
+                    <li><strong>隱私安全：</strong> 所有運算皆在您的瀏覽器內完成，照片不會上傳至伺服器。</li>
+                </ul>
+            </div>
 
-            <h3>Secure & Private Processing</h3>
-            <p>Unlike other converters that require you to upload your personal photos to a cloud server, our tool processes images <strong>locally in your browser</strong> using advanced HTML5 Canvas technology. Your photos never leave your device, ensuring 100% privacy.</p>
+            <div id="seo-zh-CN" class="seo-content">
+                <h2>免费在线图片转换与压缩工具 (JPG/PNG/WEBP)</h2>
+                <p>图片优化对于网站速度至关重要。我们的<strong>免费图片转换器</strong>让您可以瞬间在 JPG、PNG 和 WEBP 格式之间转换。同时内置<strong>图片压缩功能</strong>，在不损失画质的情况下大幅缩小文件体积。</p>
+                <h3>为什么需要压缩图片？</h3>
+                <ul>
+                    <li><strong>加快加载速度：</strong> 较小的图片能提升网页开启速度与 SEO 排名。</li>
+                    <li><strong>节省空间：</strong> 减少手机或硬盘的存储空间占用。</li>
+                    <li><strong>隐私安全：</strong> 所有运算皆在您的浏览器内完成，照片不会上传至服务器。</li>
+                </ul>
+            </div>
+
+            <div id="seo-es" class="seo-content">
+                <h2>Convertidor y Compresor de Imágenes Online Gratis</h2>
+                <p>Optimizar imágenes es clave para la velocidad web. Nuestro <strong>Convertidor de Imágenes</strong> permite cambiar formatos entre JPG, PNG y WEBP al instante. También incluye un <strong>Compresor</strong> para reducir el tamaño del archivo sin perder calidad.</p>
+                <h3>¿Por qué comprimir imágenes?</h3>
+                <ul>
+                    <li><strong>Carga Rápida:</strong> Mejore el SEO con imágenes más ligeras.</li>
+                    <li><strong>Ahorro de Espacio:</strong> Reduzca el uso de almacenamiento.</li>
+                    <li><strong>Privacidad:</strong> Procesamos las imágenes localmente en su navegador.</li>
+                </ul>
+            </div>
+
+            <div id="seo-pt" class="seo-content">
+                <h2>Conversor e Compressor de Imagens Online Grátis</h2>
+                <p>Otimizar imagens é crucial para a velocidade do site. Nosso <strong>Conversor de Imagens</strong> permite alternar formatos entre JPG, PNG e WEBP instantaneamente. Também possui um <strong>Compressor</strong> para reduzir o tamanho do arquivo sem perder qualidade.</p>
+                <h3>Por que comprimir imagens?</h3>
+                <ul>
+                    <li><strong>Carregamento Rápido:</strong> Melhore o SEO com imagens mais leves.</li>
+                    <li><strong>Economia de Espaço:</strong> Reduza o uso de armazenamento.</li>
+                    <li><strong>Privacidade:</strong> Processamos as imagens localmente no seu navegador.</li>
+                </ul>
+            </div>
+
+            <div id="seo-fr" class="seo-content">
+                <h2>Convertisseur et Compresseur d'Images en Ligne</h2>
+                <p>L'optimisation des images est cruciale. Notre <strong>Convertisseur d'Images</strong> vous permet de changer de format entre JPG, PNG et WEBP. Il intègre aussi un <strong>Compresseur</strong> pour réduire la taille du fichier sans perte de qualité.</p>
+                <h3>Pourquoi compresser les images ?</h3>
+                <ul>
+                    <li><strong>Chargement Rapide :</strong> Améliorez le SEO avec des images légères.</li>
+                    <li><strong>Gain d'Espace :</strong> Réduisez l'utilisation du stockage.</li>
+                    <li><strong>Confidentialité :</strong> Traitement local dans votre navigateur.</li>
+                </ul>
+            </div>
+
+            <div id="seo-de" class="seo-content">
+                <h2>Kostenloser Online-Bildkonverter & Kompressor</h2>
+                <p>Die Optimierung von Bildern ist entscheidend. Unser <strong>Bildkonverter</strong> ermöglicht den sofortigen Wechsel zwischen JPG, PNG und WEBP. Er verfügt zudem über einen <strong>Kompressor</strong>, um die Dateigröße ohne Qualitätsverlust zu reduzieren.</p>
+                <h3>Warum Bilder komprimieren?</h3>
+                <ul>
+                    <li><strong>Schnelleres Laden:</strong> Verbessern Sie das SEO mit leichteren Bildern.</li>
+                    <li><strong>Platz sparen:</strong> Reduzieren Sie den Speicherverbrauch.</li>
+                    <li><strong>Datenschutz:</strong> Wir verarbeiten Bilder lokal in Ihrem Browser.</li>
+                </ul>
+            </div>
+
         </div>
+    </div>
 
-	<footer>
+    <footer>
         &copy; <span id="year"></span> MyToolBox. All Rights Reserved. 
         | <a href="privacy.html" style="color:#999; text-decoration:none;">Privacy Policy</a>
     </footer>
-
-    <script>
-        // 這行會自動抓取當前年份 (例如 2025)，你永遠不用手動改
-        document.getElementById("year").innerText = new Date().getFullYear();
-    </script>
 
     <script>
         const translations = {
@@ -160,77 +187,83 @@
                 title: "Image Converter & Compressor", desc: "Convert images to JPG, PNG, WEBP and compress them.",
                 upload_text: "📂 Click to upload image or drag & drop here",
                 label_format: "Target Format:", label_quality: "Quality:",
-                btn_process: "Convert & Download",
-                seo_title: "Why convert image formats?", seo_text: "Different formats serve different needs. JPG is good for photos, PNG supports transparency, and WEBP is best for web performance."
+                btn_process: "Convert & Download"
             },
             "zh-TW": {
                 nav_home: "首頁",
                 title: "圖片轉檔與壓縮器", desc: "將圖片轉換為 JPG, PNG, WEBP 並支援壓縮。",
                 upload_text: "📂 點擊上傳圖片，或拖曳至此",
                 label_format: "目標格式：", label_quality: "品質 (0.1-1.0)：",
-                btn_process: "開始轉換並下載",
-                seo_title: "為什麼要轉換圖片格式？", seo_text: "不同的格式適用於不同場景。WEBP 是 Google 推薦的網頁格式，體積小且畫質好。"
+                btn_process: "開始轉換並下載"
             },
             "zh-CN": {
                 nav_home: "首页",
                 title: "图片转换与压缩器", desc: "将图片转换为 JPG, PNG, WEBP 并支持压缩。",
                 upload_text: "📂 点击上传图片，或拖拽至此",
                 label_format: "目标格式：", label_quality: "质量 (0.1-1.0)：",
-                btn_process: "开始转换并下载",
-                seo_title: "为什么要转换图片格式？", seo_text: "不同的格式适用于不同场景。WEBP 是 Google 推荐的网页格式，体积小且画质好。"
+                btn_process: "开始转换并下载"
             },
             "es": {
                 nav_home: "Inicio",
                 title: "Convertidor y Compresor de Imágenes", desc: "Convierta imágenes a JPG, PNG, WEBP y comprímalas.",
                 upload_text: "📂 Clic para subir imagen o arrastrar aquí",
                 label_format: "Formato de destino:", label_quality: "Calidad:",
-                btn_process: "Convertir y Descargar",
-                seo_title: "¿Por qué convertir formatos de imagen?", seo_text: "Diferentes formatos sirven para diferentes necesidades. WEBP es mejor para el rendimiento web."
+                btn_process: "Convertir y Descargar"
             },
             "pt": {
                 nav_home: "Início",
                 title: "Conversor e Compressor de Imagem", desc: "Converta imagens para JPG, PNG, WEBP e comprima-as.",
                 upload_text: "📂 Clique para enviar ou arraste aqui",
                 label_format: "Formato de destino:", label_quality: "Qualidade:",
-                btn_process: "Converter e Baixar",
-                seo_title: "Por que converter formatos de imagem?", seo_text: "Formatos diferentes servem para necessidades diferentes. WEBP é o melhor para desempenho na web."
+                btn_process: "Converter e Baixar"
             },
             "fr": {
                 nav_home: "Accueil",
                 title: "Convertisseur et Compresseur d'Image", desc: "Convertissez des images en JPG, PNG, WEBP et compressez-les.",
                 upload_text: "📂 Cliquez pour télécharger ou glissez ici",
                 label_format: "Format cible :", label_quality: "Qualité :",
-                btn_process: "Convertir et Télécharger",
-                seo_title: "Pourquoi convertir les formats d'image ?", seo_text: "Différents formats répondent à différents besoins. WEBP est le meilleur pour les performances web."
+                btn_process: "Convertir et Télécharger"
             },
             "de": {
                 nav_home: "Startseite",
                 title: "Bildkonverter & Kompressor", desc: "Konvertieren Sie Bilder in JPG, PNG, WEBP und komprimieren Sie sie.",
                 upload_text: "📂 Hier klicken zum Hochladen oder hereinziehen",
                 label_format: "Zielformat:", label_quality: "Qualität:",
-                btn_process: "Konvertieren & Laden",
-                seo_title: "Warum Bildformate konvertieren?", seo_text: "Verschiedene Formate dienen unterschiedlichen Anforderungen. WEBP ist am besten für die Web-Performance."
+                btn_process: "Konvertieren & Laden"
             }
         };
 
         function setLanguage(lang) {
-            // 防呆：如果語言不存在，強制轉英文
             if (!translations[lang]) lang = 'en';
             try { localStorage.setItem('lang', lang); } catch (e) {}
             
             const select = document.querySelector('.lang-switch');
             if(select) select.value = lang;
             
+            // 1. 介面文字翻譯
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if(translations[lang][key]) el.innerText = translations[lang][key];
             });
+
+            // 2. SEO 文章切換 (顯示選中的語言，隱藏其他)
+            document.querySelectorAll('.seo-content').forEach(el => {
+                el.style.display = 'none';
+            });
+            const targetSeo = document.getElementById('seo-' + lang);
+            if (targetSeo) {
+                targetSeo.style.display = 'block';
+            } else {
+                document.getElementById('seo-en').style.display = 'block';
+            }
         }
         
-        // 初始化：讀取記憶，若無則預設英文
+        // 初始化
         const savedLang = localStorage.getItem('lang') || 'en';
+        document.getElementById("year").innerText = new Date().getFullYear();
         setLanguage(savedLang);
 
+        // 圖片處理邏輯
         let originalImage = null;
         function loadImage(input) {
             if (input.files && input.files[0]) {
@@ -270,5 +303,4 @@
         }
     </script>
 </body>
-
 </html>
