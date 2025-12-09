@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Converter & Compressor</title>
+    <style>
+        :root { --primary: #0066cc; --bg: #f4f6f8; --white: #ffffff; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; color: #333; display: flex; flex-direction: column; min-height: 100vh;}
+        
+        /* --- 導覽列核心設定 --- */
+        nav { 
+            background: var(--white); 
+            padding: 15px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+        }
+        
+        .logo { color: var(--primary); font-weight: bold; font-size: 1.2rem; text-decoration: none; }
+        
+        /* ★★★ 這裡做了強力修正 ★★★ */
+        .nav-links { 
+            display: flex !important;        /* 強制啟用 Flex 排版 */
+            flex-direction: row !important;  /* 強制橫向排列 */
+            align-items: center !important;  /* 強制垂直置中 */
+            gap: 15px; 
+            white-space: nowrap;             /* 禁止文字換行 */
+        }
+        
+        .nav-links a { 
+            text-decoration: none; 
+            color: #555; 
+            font-weight: 500; 
+            font-size: 0.9rem; 
+        }
+        
+        /* 語言選單樣式 */
+        select.lang-switch { 
+            padding: 5px; 
+            border-radius: 5px; 
+            border: 1px solid #ddd; 
+            cursor: pointer; 
+            margin: 0; /* 清除可能的外距 */
+        } 
+        
+        /* --- 其他內容樣式 --- */
+        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; flex: 1; width: 100%; box-sizing: border-box; }
+        .card { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        
+        .upload-area { border: 2px dashed #ccc; padding: 40px; text-align: center; border-radius: 8px; cursor: pointer; transition: 0.2s; background: #fafafa; }
+        .upload-area:hover { border-color: var(--primary); background: #f0f7ff; }
+        
+        .controls { display: none; margin-top: 20px; padding: 20px; background: #f9f9f9; border-radius: 8px; }
+        .control-group { margin-bottom: 15px; text-align: left; }
+        label { font-weight: bold; display: block; margin-bottom: 5px; }
+        select, input[type=range] { width: 100%; padding: 8px; }
+        
+        .btn { background: var(--primary); color: white; border: none; padding: 12px 30px; font-size: 1rem; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 10px; transition: 0.2s; }
+        .btn:hover { background: #0052a3; }
+        
+        #preview-img { max-width: 100%; margin-top: 20px; display: none; border-radius: 8px; border: 1px solid #ddd; }
+        
+        .ad-slot { background: #f0f0f0; height: 100px; margin: 20px 0; display: flex; align-items: center; justify-content: center; color: #999; }
+        .seo-content { margin-top: 40px; background: white; padding: 30px; border-radius: 12px; }
+        footer { text-align: center; padding: 20px; color: #888; margin-top: auto; }
+        
+        /* 手機版：螢幕真的很小時才允許變直排，保持美觀 */
+        @media (max-width: 400px) { 
+            nav { flex-direction: column; gap: 10px; } 
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">MyToolBox</a>
+        <div class="nav-links">
+            <a href="index.html" data-i18n="nav_home">Home</a>
+            <select class="lang-switch" onchange="setLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="zh-TW">繁體中文</option>
+                <option value="zh-CN">简体中文</option>
+                <option value="es">Español</option>
+                <option value="pt">Português</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card">
+            <h1 data-i18n="title">Image Converter & Compressor</h1>
+            <p data-i18n="desc">Convert images to JPG, PNG, WEBP and compress them.</p>
+            
+            <div class="upload-area" onclick="document.getElementById('file-input').click()">
+                <p data-i18n="upload_text">📂 Click to upload image or drag & drop here</p>
+                <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="loadImage(this)">
+            </div>
+
+            <div class="controls" id="controls">
+                <div class="control-group">
+                    <label data-i18n="label_format">Target Format:</label>
+                    <select id="format">
+                        <option value="image/jpeg">JPG</option>
+                        <option value="image/png">PNG</option>
+                        <option value="image/webp">WEBP</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label><span data-i18n="label_quality">Quality:</span> <span id="quality-val">0.9</span></label>
+                    <input type="range" id="quality" min="0.1" max="1" step="0.1" value="0.9" oninput="document.getElementById('quality-val').innerText=this.value">
+                </div>
+
+                <button class="btn" onclick="processImage()" data-i18n="btn_process">Convert & Download</button>
+            </div>
+            <img id="preview-img" src="">
+        </div>
+
+        <div class="ad-slot">[AdSense Space]</div>
+        <div class="seo-content">
+            <h2 data-i18n="seo_title">Why convert image formats?</h2>
+            <p data-i18n="seo_text">Different formats serve different needs. JPG is good for photos, PNG supports transparency, and WEBP is best for web performance.</p>
+        </div>
+    </div>
+
+	<footer>
+        &copy; <span id="year"></span> MyToolBox. All Rights Reserved. 
+        | <a href="privacy.html" style="color:#999; text-decoration:none;">Privacy Policy</a>
+    </footer>
+
+    <script>
+        // 這行會自動抓取當前年份 (例如 2025)，你永遠不用手動改
+        document.getElementById("year").innerText = new Date().getFullYear();
+    </script>
+
+    <script>
+        const translations = {
+            "en": {
+                nav_home: "Home",
+                title: "Image Converter & Compressor", desc: "Convert images to JPG, PNG, WEBP and compress them.",
+                upload_text: "📂 Click to upload image or drag & drop here",
+                label_format: "Target Format:", label_quality: "Quality:",
+                btn_process: "Convert & Download",
+                seo_title: "Why convert image formats?", seo_text: "Different formats serve different needs. JPG is good for photos, PNG supports transparency, and WEBP is best for web performance."
+            },
+            "zh-TW": {
+                nav_home: "首頁",
+                title: "圖片轉檔與壓縮器", desc: "將圖片轉換為 JPG, PNG, WEBP 並支援壓縮。",
+                upload_text: "📂 點擊上傳圖片，或拖曳至此",
+                label_format: "目標格式：", label_quality: "品質 (0.1-1.0)：",
+                btn_process: "開始轉換並下載",
+                seo_title: "為什麼要轉換圖片格式？", seo_text: "不同的格式適用於不同場景。WEBP 是 Google 推薦的網頁格式，體積小且畫質好。"
+            },
+            "zh-CN": {
+                nav_home: "首页",
+                title: "图片转换与压缩器", desc: "将图片转换为 JPG, PNG, WEBP 并支持压缩。",
+                upload_text: "📂 点击上传图片，或拖拽至此",
+                label_format: "目标格式：", label_quality: "质量 (0.1-1.0)：",
+                btn_process: "开始转换并下载",
+                seo_title: "为什么要转换图片格式？", seo_text: "不同的格式适用于不同场景。WEBP 是 Google 推荐的网页格式，体积小且画质好。"
+            },
+            "es": {
+                nav_home: "Inicio",
+                title: "Convertidor y Compresor de Imágenes", desc: "Convierta imágenes a JPG, PNG, WEBP y comprímalas.",
+                upload_text: "📂 Clic para subir imagen o arrastrar aquí",
+                label_format: "Formato de destino:", label_quality: "Calidad:",
+                btn_process: "Convertir y Descargar",
+                seo_title: "¿Por qué convertir formatos de imagen?", seo_text: "Diferentes formatos sirven para diferentes necesidades. WEBP es mejor para el rendimiento web."
+            },
+            "pt": {
+                nav_home: "Início",
+                title: "Conversor e Compressor de Imagem", desc: "Converta imagens para JPG, PNG, WEBP e comprima-as.",
+                upload_text: "📂 Clique para enviar ou arraste aqui",
+                label_format: "Formato de destino:", label_quality: "Qualidade:",
+                btn_process: "Converter e Baixar",
+                seo_title: "Por que converter formatos de imagem?", seo_text: "Formatos diferentes servem para necessidades diferentes. WEBP é o melhor para desempenho na web."
+            },
+            "fr": {
+                nav_home: "Accueil",
+                title: "Convertisseur et Compresseur d'Image", desc: "Convertissez des images en JPG, PNG, WEBP et compressez-les.",
+                upload_text: "📂 Cliquez pour télécharger ou glissez ici",
+                label_format: "Format cible :", label_quality: "Qualité :",
+                btn_process: "Convertir et Télécharger",
+                seo_title: "Pourquoi convertir les formats d'image ?", seo_text: "Différents formats répondent à différents besoins. WEBP est le meilleur pour les performances web."
+            },
+            "de": {
+                nav_home: "Startseite",
+                title: "Bildkonverter & Kompressor", desc: "Konvertieren Sie Bilder in JPG, PNG, WEBP und komprimieren Sie sie.",
+                upload_text: "📂 Hier klicken zum Hochladen oder hereinziehen",
+                label_format: "Zielformat:", label_quality: "Qualität:",
+                btn_process: "Konvertieren & Laden",
+                seo_title: "Warum Bildformate konvertieren?", seo_text: "Verschiedene Formate dienen unterschiedlichen Anforderungen. WEBP ist am besten für die Web-Performance."
+            }
+        };
+
+        function setLanguage(lang) {
+            // 防呆：如果語言不存在，強制轉英文
+            if (!translations[lang]) lang = 'en';
+            try { localStorage.setItem('lang', lang); } catch (e) {}
+            
+            const select = document.querySelector('.lang-switch');
+            if(select) select.value = lang;
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(translations[lang][key]) el.innerText = translations[lang][key];
+            });
+        }
+        
+        // 初始化：讀取記憶，若無則預設英文
+        const savedLang = localStorage.getItem('lang') || 'en';
+        setLanguage(savedLang);
+
+        let originalImage = null;
+        function loadImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    originalImage = new Image();
+                    originalImage.src = e.target.result;
+                    originalImage.onload = function() {
+                        document.getElementById('preview-img').src = e.target.result;
+                        document.getElementById('preview-img').style.display = 'block';
+                        document.getElementById('controls').style.display = 'block';
+                    }
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function processImage() {
+            if (!originalImage) return;
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = originalImage.width;
+            canvas.height = originalImage.height;
+            const format = document.getElementById('format').value;
+            if (format === 'image/jpeg') {
+                ctx.fillStyle = "#FFFFFF";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+            ctx.drawImage(originalImage, 0, 0);
+            const quality = parseFloat(document.getElementById('quality').value);
+            const dataUrl = canvas.toDataURL(format, quality);
+            const link = document.createElement('a');
+            link.download = 'converted.' + format.split('/')[1];
+            link.href = dataUrl;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>

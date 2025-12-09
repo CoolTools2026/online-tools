@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Online Tools - Converter, Downloader & Generator</title>
+    <meta name="description" content="Collection of free online tools: M3U converter, YouTube thumbnail downloader, Image compressor, QR Code generator, Password generator, and Word counter.">
+    <style>
+        :root { --primary: #0066cc; --bg: #f4f6f8; --white: #ffffff; --text: #333; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.6; }
+        
+        /* 導覽列 */
+        nav { background: var(--white); padding: 15px 5%; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+        nav .logo { font-weight: bold; font-size: 1.4rem; color: var(--primary); text-decoration: none; }
+        
+        .nav-actions { display: flex; gap: 15px; align-items: center; }
+        select.lang-switch { padding: 5px; border-radius: 5px; border: 1px solid #ddd; cursor: pointer; }
+
+        /* 英雄區 (大標題) */
+        .hero { text-align: center; padding: 60px 20px; background: linear-gradient(135deg, #0066cc, #0099ff); color: white; margin-bottom: 40px; }
+        .hero h1 { margin: 0 0 15px 0; font-size: 2.5rem; }
+        .hero p { font-size: 1.1rem; opacity: 0.9; max-width: 700px; margin: 0 auto; }
+
+        .container { max-width: 1100px; margin: 0 auto 50px auto; padding: 0 20px; }
+        
+        /* 網格佈局：自動適應，大螢幕 3 列 */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        
+        .tool-card { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; border: 1px solid #eee; transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box; }
+        .tool-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-color: var(--primary); }
+        .tool-card h3 { color: var(--primary); margin: 15px 0; font-size: 1.3rem;}
+        .tool-card p { color: #666; font-size: 0.95rem; margin-bottom: 25px; flex-grow: 1; }
+        
+        .btn-link { display: inline-block; padding: 12px 30px; background: var(--primary); color: white; text-decoration: none; border-radius: 6px; font-weight: 500; transition: 0.2s; }
+        .btn-link:hover { background: #004494; }
+        
+        .icon { font-size: 3.5rem; display: block; margin-bottom: 10px; }
+        footer { text-align: center; padding: 30px; color: #999; border-top: 1px solid #ddd; margin-top: 50px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">MyToolBox</a>
+        <div class="nav-actions">
+            <select class="lang-switch" onchange="setLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="zh-TW">繁體中文</option>
+                <option value="zh-CN">简体中文</option>
+                <option value="es">Español</option>
+                <option value="pt">Português</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1 data-i18n="hero_title">Free Online Tools Box</h1>
+        <p data-i18n="hero_desc">Simple, Fast, and Secure. All processing is done in your browser.</p>
+    </div>
+
+    <div class="container">
+        <div class="grid">
+            <div class="tool-card">
+                <span class="icon">📺</span>
+                <h3 data-i18n="card1_title">M3U Playlist Converter</h3>
+                <p data-i18n="card1_desc">Organize your IPTV playlist. Convert M3U/M3U8 to CSV or TXT easily.</p>
+                <a href="m3u.html" class="btn-link" data-i18n="btn_start">Start Now</a>
+            </div>
+            
+            <div class="tool-card">
+                <span class="icon">🖼️</span>
+                <h3 data-i18n="card2_title">YouTube Thumbnail</h3>
+                <p data-i18n="card2_desc">Download HD/4K thumbnails from any YouTube video instantly.</p>
+                <a href="yt-thumb.html" class="btn-link" data-i18n="btn_start">Start Now</a>
+            </div>
+            
+            <div class="tool-card">
+                <span class="icon">🎨</span>
+                <h3 data-i18n="card3_title">Image Converter</h3>
+                <p data-i18n="card3_desc">Convert and compress images (JPG, PNG, WEBP) to reduce file size.</p>
+                <a href="img-tool.html" class="btn-link" data-i18n="btn_start">Start Now</a>
+            </div>
+            
+            <div class="tool-card">
+                <span class="icon">📱</span>
+                <h3 data-i18n="card4_title">QR Code Generator</h3>
+                <p data-i18n="card4_desc">Create custom colored QR Codes with text or URL. Free download.</p>
+                <a href="qrcode.html" class="btn-link" data-i18n="btn_start">Start Now</a>
+            </div>
+
+            <div class="tool-card">
+                <span class="icon">🔒</span>
+                <h3 data-i18n="card5_title">Password Generator</h3>
+                <p data-i18n="card5_desc">Create secure, random, and strong passwords to protect your accounts.</p>
+                <a href="password.html" class="btn-link" data-i18n="btn_start">Start Now</a>
+            </div>
+
+            <div class="tool-card">
+                <span class="icon">📝</span>
+                <h3 data-i18n="card6_title">Word Counter</h3>
+                <p data-i18n="card6_desc">Count words, characters, and paragraphs in real-time for your writing.</p>
+                <a href="word-count.html" class="btn-link" data-i18n="btn_start">Start Now</a>
+            </div>
+        </div>
+    </div>
+
+	<footer>
+        &copy; <span id="year"></span> MyToolBox. All Rights Reserved. 
+        | <a href="privacy.html" style="color:#999; text-decoration:none;">Privacy Policy</a>
+    </footer>
+
+    <script>
+        // 這行會自動抓取當前年份 (例如 2025)，你永遠不用手動改
+        document.getElementById("year").innerText = new Date().getFullYear();
+    </script>
+
+    <script>
+        const translations = {
+            "en": {
+                hero_title: "Free Online Tools Box", hero_desc: "Simple, Fast, and Secure. All processing is done in your browser.",
+                card1_title: "M3U Playlist Converter", card1_desc: "Organize your IPTV playlist. Convert M3U/M3U8 to CSV or TXT easily.",
+                card2_title: "YouTube Thumbnail", card2_desc: "Download HD/4K thumbnails from any YouTube video instantly.",
+                card3_title: "Image Converter", card3_desc: "Convert and compress images (JPG, PNG, WEBP) to reduce file size.",
+                card4_title: "QR Code Generator", card4_desc: "Create custom colored QR Codes with text or URL. Free download.",
+                card5_title: "Password Generator", card5_desc: "Create secure, random, and strong passwords to protect your accounts.",
+                card6_title: "Word Counter", card6_desc: "Count words, characters, and paragraphs in real-time for your writing.",
+                btn_start: "Start Now"
+            },
+            "zh-TW": {
+                hero_title: "免費線上工具箱", hero_desc: "無需安裝軟體，保護隱私，所有運算皆在您的瀏覽器中完成。",
+                card1_title: "M3U 列表轉換器", card1_desc: "專為 IPTV 設計。將 M3U/M3U8 轉換為 Excel 表格 (CSV) 或純文字。",
+                card2_title: "YouTube 縮圖下載", card2_desc: "一鍵提取 YouTube 影片的高畫質 (HD/4K) 封面圖。",
+                card3_title: "圖片轉檔與壓縮", card3_desc: "支援 JPG, PNG, WEBP 互轉與壓縮，縮小檔案體積。",
+                card4_title: "QR Code 生成器", card4_desc: "快速製作可自訂顏色的 QR Code，支援高解析度下載。",
+                card5_title: "強密碼生成器", card5_desc: "立即產生安全、隨機的高強度密碼，保護您的帳號安全。",
+                card6_title: "字數計算器", card6_desc: "即時計算文章的字數、字元數和段落數，寫作必備工具。",
+                btn_start: "開始使用"
+            },
+            "zh-CN": {
+                hero_title: "免费在线工具箱", hero_desc: "无需安装软件，保护隐私，所有运算皆在您的浏览器中完成。",
+                card1_title: "M3U 列表转换器", card1_desc: "专为 IPTV 设计。将 M3U/M3U8 转换为 Excel 表格 (CSV) 或纯文本。",
+                card2_title: "YouTube 封面下载", card2_desc: "一键提取 YouTube 视频的高画质 (HD/4K) 封面图。",
+                card3_title: "图片转换与压缩", card3_desc: "支持 JPG, PNG, WEBP 互转与压缩，缩小文件体积。",
+                card4_title: "二维码生成器", card4_desc: "快速制作可自定义颜色的二维码，支持高分辨率下载。",
+                card5_title: "强密码生成器", card5_desc: "立即生成安全、随机的高强度密码，保护您的账号安全。",
+                card6_title: "字数计算器", card6_desc: "即时计算文章的字数、字符数和段落数，写作必备工具。",
+                btn_start: "开始使用"
+            },
+            "es": {
+                hero_title: "Caja de Herramientas Online", hero_desc: "Simple, rápido y seguro. Todo el procesamiento se realiza en su navegador.",
+                card1_title: "Convertidor M3U", card1_desc: "Organice su lista IPTV. Convierta M3U a CSV o TXT fácilmente.",
+                card2_title: "Miniatura YouTube", card2_desc: "Descargue miniaturas HD/4K de cualquier video de YouTube.",
+                card3_title: "Convertidor de Imagen", card3_desc: "Convierta y comprima imágenes (JPG, PNG, WEBP) para reducir el tamaño.",
+                card4_title: "Generador Código QR", card4_desc: "Cree códigos QR personalizados con texto o URL. Descarga gratuita.",
+                card5_title: "Generador de Contraseñas", card5_desc: "Cree contraseñas seguras y aleatorias para proteger sus cuentas.",
+                card6_title: "Contador de Palabras", card6_desc: "Cuente palabras, caracteres y párrafos en tiempo real para su escritura.",
+                btn_start: "Empezar"
+            },
+            "pt": {
+                hero_title: "Caixa de Ferramentas Online", hero_desc: "Simples, rápido e seguro. Todo o processamento é feito no seu navegador.",
+                card1_title: "Conversor M3U", card1_desc: "Organize sua playlist IPTV. Converta M3U para CSV ou TXT facilmente.",
+                card2_title: "Miniatura YouTube", card2_desc: "Baixe miniaturas HD/4K de qualquer vídeo do YouTube instantaneamente.",
+                card3_title: "Conversor de Imagem", card3_desc: "Converta e comprima imagens (JPG, PNG, WEBP) para reduzir o tamanho.",
+                card4_title: "Gerador de QR Code", card4_desc: "Crie QR Codes personalizados com texto ou URL. Download grátis.",
+                card5_title: "Gerador de Senhas", card5_desc: "Crie senhas seguras e aleatórias para proteger suas contas.",
+                card6_title: "Contador de Palavras", card6_desc: "Conte palavras, caracteres e parágrafos em tempo real.",
+                btn_start: "Começar"
+            },
+            "fr": {
+                hero_title: "Boîte à Outils en Ligne", hero_desc: "Simple, rapide et sécurisé. Tout le traitement est effectué dans votre navigateur.",
+                card1_title: "Convertisseur M3U", card1_desc: "Organisez votre playlist IPTV. Convertissez M3U en CSV ou TXT.",
+                card2_title: "Miniature YouTube", card2_desc: "Téléchargez des miniatures HD/4K de n'importe quelle vidéo YouTube.",
+                card3_title: "Convertisseur Image", card3_desc: "Convertissez et compressez des images (JPG, PNG, WEBP).",
+                card4_title: "Générateur Code QR", card4_desc: "Créez des codes QR personnalisés avec du texte ou une URL.",
+                card5_title: "Générateur Mot de Passe", card5_desc: "Créez des mots de passe sécurisés et aléatoires.",
+                card6_title: "Compteur de Mots", card6_desc: "Comptez les mots, caractères et paragraphes en temps réel.",
+                btn_start: "Commencer"
+            },
+            "de": {
+                hero_title: "Kostenlose Online-Tools", hero_desc: "Einfach, schnell und sicher. Die gesamte Verarbeitung erfolgt in Ihrem Browser.",
+                card1_title: "M3U Konverter", card1_desc: "Organisieren Sie Ihre IPTV-Playlist. Konvertieren Sie M3U in CSV oder TXT.",
+                card2_title: "YouTube Thumbnail", card2_desc: "Laden Sie HD/4K-Thumbnails von jedem YouTube-Video herunter.",
+                card3_title: "Bildkonverter", card3_desc: "Konvertieren und komprimieren Sie Bilder (JPG, PNG, WEBP).",
+                card4_title: "QR-Code Generator", card4_desc: "Erstellen Sie benutzerdefinierte QR-Codes mit Text oder URL.",
+                card5_title: "Passwort-Generator", card5_desc: "Erstellen Sie sichere, zufällige Passwörter.",
+                card6_title: "Wortzähler", card6_desc: "Zählen Sie Wörter, Zeichen und Absätze in Echtzeit.",
+                btn_start: "Jetzt Starten"
+            }
+        };
+
+        function setLanguage(lang) {
+            // 防呆：如果語言不存在，強制轉英文
+            if (!translations[lang]) lang = 'en';
+            try { localStorage.setItem('lang', lang); } catch (e) {}
+            
+            const select = document.querySelector('.lang-switch');
+            if(select) select.value = lang;
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(translations[lang][key]) el.innerText = translations[lang][key];
+            });
+        }
+        
+        // 初始化：讀取記憶，若無則預設英文
+        const savedLang = localStorage.getItem('lang') || 'en';
+        setLanguage(savedLang);
+    </script>
+</body>
+</html>
