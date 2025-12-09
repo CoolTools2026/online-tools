@@ -8,19 +8,34 @@
         :root { --primary: #0066cc; --bg: #f4f6f8; --white: #ffffff; }
         body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; color: #333; display: flex; flex-direction: column; min-height: 100vh;}
         
-        /* 導覽列設定 */
-        nav { background: var(--white); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        /* --- 導覽列設定 --- */
+        nav { 
+            background: var(--white); 
+            padding: 15px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+            white-space: nowrap; /* 禁止換行 */
+        }
+        
         .logo { color: var(--primary); font-weight: bold; font-size: 1.2rem; text-decoration: none; }
         
-        /* 關鍵：強制橫向排列 */
-        .nav-links { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+        /* ★★★ 強制橫向排列 ★★★ */
+        .nav-links { 
+            display: flex !important; 
+            align-items: center !important; 
+            gap: 15px; 
+            flex-wrap: nowrap !important; 
+        }
         .nav-links a { text-decoration: none; color: #555; font-weight: 500; font-size: 0.9rem; white-space: nowrap; }
+        
         select.lang-switch { padding: 5px; border-radius: 5px; border: 1px solid #ddd; cursor: pointer; } 
 
+        /* --- 內容區塊 --- */
         .container { max-width: 800px; margin: 40px auto; padding: 0 20px; flex: 1; width: 100%; box-sizing: border-box; }
         .card { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         
-        /* 統計數據顯示列 */
         .stats-row { display: flex; justify-content: space-around; background: #f0f7ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; text-align: center; border: 1px solid #e0e7ff; }
         .stat-item strong { display: block; font-size: 2rem; color: var(--primary); font-weight: bold; }
         .stat-item span { font-size: 0.9rem; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; display: block; }
@@ -32,7 +47,12 @@
         .btn:hover { background: #c82333; }
 
         .ad-slot { background: #f0f0f0; height: 100px; margin: 20px 0; display: flex; align-items: center; justify-content: center; color: #999; }
-        .seo-content { margin-top: 40px; background: white; padding: 30px; border-radius: 12px; clear: both; }
+        
+        /* SEO 文章區塊 */
+        .seo-section { margin-top: 40px; background: white; padding: 30px; border-radius: 12px; text-align: left; line-height: 1.8; color: #444; }
+        .seo-section h2 { color: var(--primary); margin-top: 0; }
+        .seo-content { display: none; }
+
         footer { text-align: center; padding: 20px; color: #888; margin-top: auto; }
         
         /* 手機版適配 */
@@ -77,21 +97,94 @@
 
         <div class="ad-slot">[AdSense Space]</div>
 
-        <div class="seo-content">
-            <h2 data-i18n="seo_title">Free Online Word Counter</h2>
-            <p data-i18n="seo_text">Whether you are writing an essay, a blog post, or a tweet, character limits matter. Our free online word counter helps you track text length in real-time. No upload required.</p>
+        <div class="seo-section">
+            
+            <div id="seo-en" class="seo-content">
+                <h2>Free Online Word Counter Tool</h2>
+                <p>Whether you are writing an essay, a blog post, or a tweet, character limits matter. Our <strong>Free Online Word Counter</strong> helps you track text length in real-time. Simply type or paste your text, and we will do the math for you.</p>
+                <h3>Why Count Words?</h3>
+                <ul>
+                    <li><strong>Social Media:</strong> Twitter (280 chars), Instagram bios, and Facebook posts all have limits.</li>
+                    <li><strong>Academic Writing:</strong> Essays often require a strict minimum or maximum word count.</li>
+                    <li><strong>SEO:</strong> Blog posts usually aim for 1,000+ words to rank better on Google.</li>
+                </ul>
+                <h3>Character vs. Word Count</h3>
+                <p><strong>Word Count</strong> is the number of individual words (separated by spaces). <strong>Character Count</strong> includes all letters, numbers, and spaces. Our tool provides both metrics simultaneously.</p>
+            </div>
+
+            <div id="seo-zh-TW" class="seo-content">
+                <h2>免費線上字數計算器 - 即時統計</h2>
+                <p>無論您是在寫論文、部落格文章還是社群貼文，字數限制都很重要。我們的<strong>免費字數計算器</strong>能即時統計您的文章長度。只需輸入或貼上文字，系統便會自動計算。</p>
+                <h3>為什麼需要計算字數？</h3>
+                <ul>
+                    <li><strong>社群媒體：</strong> Twitter (280字元)、Instagram 簡介和 Facebook 貼文都有長度限制。</li>
+                    <li><strong>學術寫作：</strong> 學校報告或論文通常有嚴格的字數上下限要求。</li>
+                    <li><strong>SEO 優化：</strong> 長篇文章（通常超過 1000 字）較容易在 Google 獲得好的排名。</li>
+                </ul>
+                <h3>字數與字元數的差別</h3>
+                <p><strong>字數 (Words)</strong> 是指單詞的數量（英文以空格分隔）。<strong>字元數 (Characters)</strong> 則包含所有字母、標點符號與空格。對於中文寫作，通常參考「字元數」較為準確。</p>
+            </div>
+
+            <div id="seo-zh-CN" class="seo-content">
+                <h2>免费在线字数计算器 - 即时统计</h2>
+                <p>无论您是在写论文、博客文章还是社交贴文，字数限制都很重要。我们的<strong>免费字数计算器</strong>能即时统计您的文章长度。只需输入或粘贴文字，系统便会自动计算。</p>
+                <h3>为什么需要计算字数？</h3>
+                <ul>
+                    <li><strong>社交媒体：</strong> Twitter (280字符)、Instagram 简介和 Facebook 贴文都有长度限制。</li>
+                    <li><strong>学术写作：</strong> 学校报告或论文通常有严格的字数上下限要求。</li>
+                    <li><strong>SEO 优化：</strong> 长篇文章（通常超过 1000 字）较容易在 Google 获得好的排名。</li>
+                </ul>
+                <h3>字数与字符数的区别</h3>
+                <p><strong>字数 (Words)</strong> 是指单词的数量（英文以空格分隔）。<strong>字符数 (Characters)</strong> 则包含所有字母、标点符号与空格。对于中文写作，通常参考“字符数”较为准确。</p>
+            </div>
+
+            <div id="seo-es" class="seo-content">
+                <h2>Contador de Palabras Online Gratis</h2>
+                <p>Ya sea que esté escribiendo un ensayo, un blog o un tweet, los límites importan. Nuestro <strong>Contador de Palabras</strong> rastrea la longitud del texto en tiempo real.</p>
+                <h3>¿Por qué contar palabras?</h3>
+                <ul>
+                    <li><strong>Redes Sociales:</strong> Twitter, Instagram y Facebook tienen límites de caracteres.</li>
+                    <li><strong>Escritura Académica:</strong> Los ensayos a menudo requieren un recuento mínimo o máximo estricto.</li>
+                </ul>
+            </div>
+
+            <div id="seo-pt" class="seo-content">
+                <h2>Contador de Palavras Online Grátis</h2>
+                <p>Seja escrevendo um ensaio, um blog ou um tweet, os limites importam. Nosso <strong>Contador de Palavras</strong> rastreia o comprimento do texto em tempo real.</p>
+                <h3>Por que contar palavras?</h3>
+                <ul>
+                    <li><strong>Redes Sociais:</strong> Twitter, Instagram e Facebook têm limites de caracteres.</li>
+                    <li><strong>Escrita Acadêmica:</strong> Ensaios geralmente exigem uma contagem mínima ou máxima rigorosa.</li>
+                </ul>
+            </div>
+
+            <div id="seo-fr" class="seo-content">
+                <h2>Compteur de Mots en Ligne Gratuit</h2>
+                <p>Que vous écriviez une dissertation, un article de blog ou un tweet, les limites comptent. Notre <strong>Compteur de Mots</strong> suit la longueur du texte en temps réel.</p>
+                <h3>Pourquoi compter les mots ?</h3>
+                <ul>
+                    <li><strong>Réseaux Sociaux :</strong> Twitter, Instagram et Facebook ont des limites de caractères.</li>
+                    <li><strong>Rédaction Académique :</strong> Les essais exigent souvent un nombre de mots strict.</li>
+                </ul>
+            </div>
+
+            <div id="seo-de" class="seo-content">
+                <h2>Kostenloser Online-Wortzähler</h2>
+                <p>Ob Sie einen Aufsatz, einen Blogbeitrag oder einen Tweet schreiben, Zeichenbegrenzungen sind wichtig. Unser <strong>Wortzähler</strong> verfolgt die Textlänge in Echtzeit.</p>
+                <h3>Warum Wörter zählen?</h3>
+                <ul>
+                    <li><strong>Soziale Medien:</strong> Twitter, Instagram und Facebook haben Zeichenbegrenzungen.</li>
+                    <li><strong>Akademisches Schreiben:</strong> Aufsätze erfordern oft eine strenge Mindest- oder Höchstwortzahl.</li>
+                </ul>
+            </div>
+
         </div>
     </div>
 
-	<footer>
+    <footer>
         &copy; <span id="year"></span> MyToolBox. All Rights Reserved. 
         | <a href="privacy.html" style="color:#999; text-decoration:none;">Privacy Policy</a>
     </footer>
-
-    <script>
-        // 這行會自動抓取當前年份 (例如 2025)，你永遠不用手動改
-        document.getElementById("year").innerText = new Date().getFullYear();
-    </script>
 
     <script>
         const translations = {
@@ -99,88 +192,97 @@
                 nav_home: "Home",
                 title: "Word Counter", desc: "Count words, characters, and paragraphs in real-time.",
                 lbl_words: "Words", lbl_chars: "Characters", lbl_paras: "Paragraphs",
-                btn_clear: "Clear Text",
-                seo_title: "Free Online Word Counter", seo_text: "Track text length in real-time. Useful for essays, blog posts, and social media."
+                btn_clear: "Clear Text"
             },
             "zh-TW": {
                 nav_home: "首頁",
                 title: "字數計算器", desc: "即時計算文字的字數、字元數和段落數。",
                 lbl_words: "字數", lbl_chars: "字元數", lbl_paras: "段落",
-                btn_clear: "清空內容",
-                seo_title: "免費線上字數統計", seo_text: "無論是寫論文、部落格還是貼文，字數統計都很重要。本工具即時幫助您計算內容長度。"
+                btn_clear: "清空內容"
             },
             "zh-CN": {
                 nav_home: "首页",
                 title: "字数计算器", desc: "即时计算文字的字数、字符数和段落数。",
                 lbl_words: "字数", lbl_chars: "字符数", lbl_paras: "段落",
-                btn_clear: "清空内容",
-                seo_title: "免费在线字数统计", seo_text: "无论是写论文、博客还是发帖，字数统计都很重要。本工具即时帮助您计算内容长度。"
+                btn_clear: "清空内容"
             },
             "es": {
                 nav_home: "Inicio",
                 title: "Contador de Palabras", desc: "Cuente palabras, caracteres y párrafos en tiempo real.",
                 lbl_words: "Palabras", lbl_chars: "Caracteres", lbl_paras: "Párrafos",
-                btn_clear: "Borrar Texto",
-                seo_title: "Contador de Palabras Online", seo_text: "Rastree la longitud del texto en tiempo real. Útil para ensayos, blogs y redes sociales."
+                btn_clear: "Borrar Texto"
             },
             "pt": {
                 nav_home: "Início",
                 title: "Contador de Palavras", desc: "Conte palavras, caracteres e parágrafos em tempo real.",
                 lbl_words: "Palavras", lbl_chars: "Caracteres", lbl_paras: "Parágrafos",
-                btn_clear: "Limpar Texto",
-                seo_title: "Contador de Palavras Online", seo_text: "Acompanhe o comprimento do texto em tempo real. Útil para ensaios, blogs e mídias sociais."
+                btn_clear: "Limpar Texto"
             },
             "fr": {
                 nav_home: "Accueil",
                 title: "Compteur de Mots", desc: "Comptez les mots, caractères et paragraphes en temps réel.",
                 lbl_words: "Mots", lbl_chars: "Caractères", lbl_paras: "Paragraphes",
-                btn_clear: "Effacer",
-                seo_title: "Compteur de Mots en Ligne", seo_text: "Suivez la longueur du texte en temps réel. Utile pour les essais, les blogs et les réseaux sociaux."
+                btn_clear: "Effacer"
             },
             "de": {
                 nav_home: "Startseite",
                 title: "Wortzähler", desc: "Zählen Sie Wörter, Zeichen und Absätze in Echtzeit.",
                 lbl_words: "Wörter", lbl_chars: "Zeichen", lbl_paras: "Absätze",
-                btn_clear: "Text Löschen",
-                seo_title: "Kostenloser Online-Wortzähler", seo_text: "Verfolgen Sie die Textlänge in Echtzeit. Nützlich für Aufsätze, Blog-Beiträge und soziale Medien."
+                btn_clear: "Text Löschen"
             }
         };
 
         function setLanguage(lang) {
             if (!translations[lang]) lang = 'en';
             try { localStorage.setItem('lang', lang); } catch (e) {}
+            
             const select = document.querySelector('.lang-switch');
             if(select) select.value = lang;
+            
+            // 介面翻譯
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if(translations[lang][key]) el.innerText = translations[lang][key];
             });
-            document.getElementById('text-input').placeholder = (lang==='en'||lang==='de'||lang==='fr') ? "Start typing..." : "請輸入...";
+            
+            // Placeholder 翻譯
+            const placeholder = (lang==='en'||lang==='de'||lang==='fr') ? "Start typing..." : "請輸入文字...";
+            document.getElementById('text-input').placeholder = placeholder;
+
+            // SEO 文章切換
+            document.querySelectorAll('.seo-content').forEach(el => {
+                el.style.display = 'none';
+            });
+            const targetSeo = document.getElementById('seo-' + lang);
+            if (targetSeo) {
+                targetSeo.style.display = 'block';
+            } else {
+                document.getElementById('seo-en').style.display = 'block';
+            }
         }
         
-        // 初始化語言
         const savedLang = localStorage.getItem('lang') || 'en';
+        document.getElementById("year").innerText = new Date().getFullYear();
         setLanguage(savedLang);
 
         function countText() {
             const text = document.getElementById('text-input').value;
             
-            // 1. 計算字元數 (Characters)
+            // 字元數
             document.getElementById('stat-chars').innerText = text.length;
 
-            // 2. 計算字數 (Words) - 簡易版，以空白分隔
-            // 過濾掉空字串，避免多重空白導致計數錯誤
+            // 字數 (簡易版：以空白分隔)
             const words = text.trim().split(/\s+/).filter(word => word.length > 0);
             document.getElementById('stat-words').innerText = words.length;
 
-            // 3. 計算段落數 (Paragraphs) - 以換行符分隔
+            // 段落數
             const paras = text.split(/\n/).filter(para => para.trim().length > 0);
             document.getElementById('stat-paras').innerText = paras.length;
         }
 
         function clearText() {
             document.getElementById('text-input').value = '';
-            countText(); // 重置計數器歸零
+            countText();
         }
     </script>
 </body>
