@@ -8,34 +8,57 @@
         :root { --primary: #0066cc; --bg: #f4f6f8; --white: #ffffff; }
         body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; color: #333; display: flex; flex-direction: column; min-height: 100vh;}
         
-        /* 導覽列設定 */
-        nav { background: var(--white); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        /* --- 導覽列設定 --- */
+        nav { 
+            background: var(--white); 
+            padding: 15px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+            white-space: nowrap; /* 整條導覽列都不准換行 */
+        }
+        
         .logo { color: var(--primary); font-weight: bold; font-size: 1.2rem; text-decoration: none; }
         
-        /* 關鍵：強制橫向排列 */
-        .nav-links { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+        /* ★★★ 強制橫向排列，防止跑版 ★★★ */
+        .nav-links { 
+            display: flex !important; 
+            align-items: center !important; 
+            gap: 15px; 
+            flex-wrap: nowrap !important; /* 絕對禁止換行 */
+        }
         .nav-links a { text-decoration: none; color: #555; font-weight: 500; font-size: 0.9rem; white-space: nowrap; }
+        
         select.lang-switch { padding: 5px; border-radius: 5px; border: 1px solid #ddd; cursor: pointer; } 
         
+        /* --- 內容區塊 --- */
         .container { max-width: 800px; margin: 40px auto; padding: 0 20px; flex: 1; width: 100%; box-sizing: border-box; }
         .card { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; }
         
         input[type="text"] { width: 80%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem; margin-bottom: 20px; box-sizing: border-box; }
+        
         .btn { background: var(--primary); color: white; border: none; padding: 12px 30px; font-size: 1rem; border-radius: 8px; cursor: pointer; transition: 0.2s; }
         .btn:hover { background: #0052a3; }
         
         #result-area { display: none; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; }
         .thumb-preview { max-width: 100%; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); margin-bottom: 15px; }
+        
         .download-links { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
         .dl-btn { background: #eee; color: #333; padding: 8px 15px; text-decoration: none; border-radius: 5px; font-size: 0.9rem; transition: 0.2s; }
         .dl-btn:hover { background: #ddd; }
         
         .ad-slot { background: #f0f0f0; height: 100px; margin: 20px 0; display: flex; align-items: center; justify-content: center; color: #999; }
-        .seo-content { margin-top: 50px; background: white; padding: 30px; border-radius: 12px; text-align: left; }
+        
+        /* SEO 文章區塊 */
+        .seo-section { margin-top: 40px; background: white; padding: 30px; border-radius: 12px; text-align: left; line-height: 1.8; color: #444; }
+        .seo-section h2 { color: var(--primary); margin-top: 0; }
+        .seo-content { display: none; } /* 預設隱藏 */
+
         footer { text-align: center; padding: 20px; color: #888; margin-top: auto; }
         
         /* 手機版適配 */
-        @media (max-width: 768px) { 
+        @media (max-width: 600px) { 
             nav { flex-direction: column; gap: 10px; } 
             .nav-links { justify-content: center; } 
         }
@@ -62,6 +85,7 @@
         <div class="card">
             <h1 data-i18n="title">YouTube Thumbnail Downloader</h1>
             <p data-i18n="desc">Enter YouTube URL to get the highest quality thumbnail.</p>
+            
             <input type="text" id="yt-url" placeholder="e.g., https://www.youtube.com/watch?v=...">
             <br>
             <button class="btn" onclick="getThumbnail()" data-i18n="btn_get">Get Thumbnail</button>
@@ -75,81 +99,161 @@
 
         <div class="ad-slot">[AdSense Space]</div>
 
-        <div class="seo-content">
-            <h2 data-i18n="seo_title">How to download YouTube Thumbnails?</h2>
-            <p data-i18n="seo_text">This tool helps you extract thumbnails from any YouTube video in 4K or HD quality. Useful for creators, designers, and presentations. Simply paste the URL and download the image instantly.</p>
+        <div class="seo-section">
+            
+            <div id="seo-en" class="seo-content">
+                <h2>Free YouTube Thumbnail Downloader - Save HD & 4K Images</h2>
+                <p>Welcome to the most reliable <strong>YouTube Thumbnail Downloader</strong> on the web. This tool allows you to grab and save high-quality thumbnails from any YouTube video in seconds. Perfect for creators, designers, and marketers.</p>
+                <h3>How to use?</h3>
+                <ul>
+                    <li><strong>Copy & Paste:</strong> Simply paste the video URL into the box.</li>
+                    <li><strong>Choose Quality:</strong> We automatically find the highest resolution available (MaxRes, HQ, or MQ).</li>
+                    <li><strong>Download:</strong> Click the button or right-click to save the image.</li>
+                </ul>
+            </div>
+
+            <div id="seo-zh-TW" class="seo-content">
+                <h2>免費 YouTube 影片縮圖下載器 (4K/HD)</h2>
+                <p>這是一個簡單好用的 <strong>YouTube 封面圖下載工具</strong>。您可以在幾秒鐘內提取任何 YouTube 影片的高畫質縮圖。無論是做報告、設計參考或收藏，這裡都能滿足您的需求。</p>
+                <h3>如何使用？</h3>
+                <ul>
+                    <li><strong>複製貼上：</strong> 將 YouTube 影片網址貼入輸入框。</li>
+                    <li><strong>選擇畫質：</strong> 系統會自動抓取最高解析度（支援 1080p MaxRes）。</li>
+                    <li><strong>下載保存：</strong> 點擊按鈕或右鍵另存圖片即可。</li>
+                </ul>
+            </div>
+
+            <div id="seo-zh-CN" class="seo-content">
+                <h2>免费 YouTube 视频封面下载器 (4K/HD)</h2>
+                <p>这是一个简单好用的 <strong>YouTube 缩略图下载工具</strong>。您可以在几秒钟内提取任何 YouTube 视频的高画质封面图。无论是做报告、设计参考或收藏，这里都能满足您的需求。</p>
+                <h3>如何使用？</h3>
+                <ul>
+                    <li><strong>复制粘贴：</strong> 将 YouTube 视频网址贴入输入框。</li>
+                    <li><strong>选择画质：</strong> 系统会自动抓取最高分辨率（支持 1080p MaxRes）。</li>
+                    <li><strong>下载保存：</strong> 点击按钮或右键另存图片即可。</li>
+                </ul>
+            </div>
+
+            <div id="seo-es" class="seo-content">
+                <h2>Descargador de Miniaturas de YouTube (HD y 4K)</h2>
+                <p>Esta herramienta le permite extraer y guardar miniaturas de alta calidad de cualquier video de YouTube en segundos. Perfecto para creadores y diseñadores.</p>
+                <h3>¿Cómo usar?</h3>
+                <ul>
+                    <li><strong>Copiar y Pegar:</strong> Pegue la URL del video en el cuadro.</li>
+                    <li><strong>Elegir Calidad:</strong> Encontramos automáticamente la resolución más alta.</li>
+                    <li><strong>Descargar:</strong> Haga clic en el botón o clic derecho para guardar.</li>
+                </ul>
+            </div>
+
+            <div id="seo-pt" class="seo-content">
+                <h2>Baixar Miniatura do YouTube (HD e 4K)</h2>
+                <p>Esta ferramenta permite extrair e salvar miniaturas de alta qualidade de qualquer vídeo do YouTube em segundos. Perfeito para criadores e designers.</p>
+                <h3>Como usar?</h3>
+                <ul>
+                    <li><strong>Copiar e Colar:</strong> Cole o URL do vídeo na caixa.</li>
+                    <li><strong>Escolher Qualidade:</strong> Encontramos automaticamente a resolução mais alta.</li>
+                    <li><strong>Baixar:</strong> Clique no botão ou clique com o botão direito para salvar.</li>
+                </ul>
+            </div>
+
+            <div id="seo-fr" class="seo-content">
+                <h2>Téléchargeur de Miniatures YouTube (HD & 4K)</h2>
+                <p>Cet outil vous permet d'extraire et d'enregistrer des miniatures de haute qualité de n'importe quelle vidéo YouTube en quelques secondes.</p>
+                <h3>Comment utiliser ?</h3>
+                <ul>
+                    <li><strong>Copier-Coller :</strong> Collez l'URL de la vidéo dans la boîte.</li>
+                    <li><strong>Choisir la qualité :</strong> Nous trouvons automatiquement la plus haute résolution.</li>
+                    <li><strong>Télécharger :</strong> Cliquez sur le bouton ou faites un clic droit pour enregistrer.</li>
+                </ul>
+            </div>
+
+            <div id="seo-de" class="seo-content">
+                <h2>YouTube Thumbnail Downloader (HD & 4K)</h2>
+                <p>Mit diesem Tool können Sie in Sekundenschnelle hochwertige Thumbnails von jedem YouTube-Video extrahieren und speichern.</p>
+                <h3>Wie benutzt man es?</h3>
+                <ul>
+                    <li><strong>Kopieren & Einfügen:</strong> Fügen Sie die Video-URL in das Feld ein.</li>
+                    <li><strong>Qualität wählen:</strong> Wir finden automatisch die höchste Auflösung.</li>
+                    <li><strong>Download:</strong> Klicken Sie auf den Button oder Rechtsklick zum Speichern.</li>
+                </ul>
+            </div>
+
         </div>
     </div>
 
-	<footer>
+    <footer>
         &copy; <span id="year"></span> MyToolBox. All Rights Reserved. 
         | <a href="privacy.html" style="color:#999; text-decoration:none;">Privacy Policy</a>
     </footer>
-
-    <script>
-        // 這行會自動抓取當前年份 (例如 2025)，你永遠不用手動改
-        document.getElementById("year").innerText = new Date().getFullYear();
-    </script>
 
     <script>
         const translations = {
             "en": {
                 nav_home: "Home",
                 title: "YouTube Thumbnail Downloader", desc: "Enter YouTube URL to get the highest quality thumbnail.",
-                btn_get: "Get Thumbnail", note_save: "Note: If download fails, right-click image and 'Save As'.",
-                seo_title: "How to download YouTube Thumbnails?", seo_text: "This tool helps you extract thumbnails from any YouTube video in 4K or HD quality. Useful for creators, designers, and presentations. Simply paste the URL and download the image instantly."
+                btn_get: "Get Thumbnail", note_save: "Note: If download fails, right-click image and 'Save As'."
             },
             "zh-TW": {
                 nav_home: "首頁",
                 title: "YouTube 影片縮圖下載器", desc: "輸入 YouTube 網址，獲取最高畫質封面圖。",
-                btn_get: "獲取縮圖", note_save: "注意：若無法下載，請對圖片按右鍵選「另存圖片」。",
-                seo_title: "如何下載 YouTube 封面？", seo_text: "這個工具可以幫助您快速提取 YouTube 影片的縮圖，支援 4K、HD 高畫質。適合創作者與設計師參考使用。只要貼上網址即可下載。"
+                btn_get: "獲取縮圖", note_save: "注意：若無法下載，請對圖片按右鍵選「另存圖片」。"
             },
             "zh-CN": {
                 nav_home: "首页",
                 title: "YouTube 视频封面下载器", desc: "输入 YouTube 网址，获取最高画质封面图。",
-                btn_get: "获取封面", note_save: "注意：若无法下载，请对图片按右键选「另存图片」。",
-                seo_title: "如何下载 YouTube 封面？", seo_text: "这个工具可以帮助您快速提取 YouTube 视频的缩略图，支持 4K、HD 高画质。适合创作者与设计师参考使用。只要贴上网址即可下载。"
+                btn_get: "获取封面", note_save: "注意：若无法下载，请对图片按右键选「另存图片」。"
             },
             "es": {
                 nav_home: "Inicio",
                 title: "Descargador de Miniaturas YT", desc: "Ingrese la URL de YouTube para obtener la miniatura de mayor calidad.",
-                btn_get: "Obtener Miniatura", note_save: "Nota: Si falla la descarga, clic derecho en la imagen y 'Guardar como'.",
-                seo_title: "¿Cómo descargar miniaturas de YouTube?", seo_text: "Esta herramienta le ayuda a extraer miniaturas de cualquier video de YouTube en calidad 4K o HD. Útil para creadores y diseñadores."
+                btn_get: "Obtener Miniatura", note_save: "Nota: Si falla la descarga, clic derecho en la imagen y 'Guardar como'."
             },
             "pt": {
                 nav_home: "Início",
                 title: "Baixar Miniatura do YouTube", desc: "Insira a URL do YouTube para obter a miniatura de maior qualidade.",
-                btn_get: "Obter Miniatura", note_save: "Nota: Se o download falhar, clique com o botão direito e 'Salvar como'.",
-                seo_title: "Como baixar miniaturas do YouTube?", seo_text: "Esta ferramenta ajuda você a extrair miniaturas de qualquer vídeo do YouTube em qualidade 4K ou HD. Útil para criadores e designers."
+                btn_get: "Obter Miniatura", note_save: "Nota: Se o download falhar, clique com o botão direito e 'Salvar como'."
             },
             "fr": {
                 nav_home: "Accueil",
                 title: "Téléchargeur Miniature YouTube", desc: "Entrez l'URL YouTube pour obtenir la miniature en haute qualité.",
-                btn_get: "Obtenir la Miniature", note_save: "Note : Si le téléchargement échoue, clic droit et 'Enregistrer sous'.",
-                seo_title: "Comment télécharger des miniatures YouTube ?", seo_text: "Cet outil vous aide à extraire les miniatures de n'importe quelle vidéo YouTube en qualité 4K ou HD. Utile pour les créateurs et les designers."
+                btn_get: "Obtenir la Miniature", note_save: "Note : Si le téléchargement échoue, clic droit et 'Enregistrer sous'."
             },
             "de": {
                 nav_home: "Startseite",
                 title: "YouTube Thumbnail Downloader", desc: "Geben Sie die YouTube-URL ein, um das Thumbnail in höchster Qualität zu erhalten.",
-                btn_get: "Thumbnail Laden", note_save: "Hinweis: Rechtsklick auf das Bild und 'Speichern unter', falls der Download fehlschlägt.",
-                seo_title: "Wie lade ich YouTube-Thumbnails herunter?", seo_text: "Dieses Tool hilft Ihnen, Thumbnails von jedem YouTube-Video in 4K- oder HD-Qualität zu extrahieren. Nützlich für Ersteller und Designer."
+                btn_get: "Thumbnail Laden", note_save: "Hinweis: Rechtsklick auf das Bild und 'Speichern unter', falls der Download fehlschlägt."
             }
         };
 
         function setLanguage(lang) {
+            // 防呆
             if (!translations[lang]) lang = 'en';
             try { localStorage.setItem('lang', lang); } catch (e) {}
+            
             const select = document.querySelector('.lang-switch');
             if(select) select.value = lang;
+            
+            // 介面翻譯
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if(translations[lang][key]) el.innerText = translations[lang][key];
             });
+
+            // SEO 文章切換
+            document.querySelectorAll('.seo-content').forEach(el => {
+                el.style.display = 'none';
+            });
+            const targetSeo = document.getElementById('seo-' + lang);
+            if (targetSeo) {
+                targetSeo.style.display = 'block';
+            } else {
+                document.getElementById('seo-en').style.display = 'block';
+            }
         }
         
-        // 讀取設定
+        // 初始化
         const savedLang = localStorage.getItem('lang') || 'en';
+        document.getElementById("year").innerText = new Date().getFullYear();
         setLanguage(savedLang);
 
         function getThumbnail() {
@@ -168,16 +272,17 @@
                 const hqUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
                 const mqUrl = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
                 
-                const lang = localStorage.getItem('lang') || 'en';
-                const dlText = (lang === 'en' || lang === 'de' || lang === 'fr') ? "Download" : "下載";
+                // 獲取當前語言來決定按鈕文字
+                const currentLang = localStorage.getItem('lang') || 'en';
+                const dlText = (currentLang === 'en' || currentLang === 'de') ? "Download" : "下載";
 
                 img.src = maxResUrl;
                 resultArea.style.display = 'block';
                 
                 linksDiv.innerHTML = `
-                    <a href="${maxResUrl}" target="_blank" class="dl-btn">${dlText} MaxRes (4K/HD)</a>
-                    <a href="${hqUrl}" target="_blank" class="dl-btn">${dlText} HQ (High)</a>
-                    <a href="${mqUrl}" target="_blank" class="dl-btn">${dlText} MQ (Medium)</a>
+                    <a href="${maxResUrl}" target="_blank" class="dl-btn">${dlText} MaxRes (HD)</a>
+                    <a href="${hqUrl}" target="_blank" class="dl-btn">${dlText} High Quality</a>
+                    <a href="${mqUrl}" target="_blank" class="dl-btn">${dlText} Medium</a>
                 `;
             } else {
                 alert('Invalid URL');
