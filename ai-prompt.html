@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Art Prompt Generator Pro - Midjourney & Stable Diffusion</title>
+    <title>AI Art Prompt Generator Ultimate - Midjourney, Stable Diffusion, DALL-E 3</title>
     <style>
-        :root { --primary: #6c5ce7; --bg: #f4f6f8; --white: #ffffff; --text: #2d3436; }
+        :root { --primary: #6c5ce7; --secondary: #00cec9; --bg: #f4f6f8; --white: #ffffff; --text: #2d3436; }
         body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; color: var(--text); display: flex; flex-direction: column; min-height: 100vh;}
         
         /* 導覽列 */
@@ -16,17 +16,28 @@
         select.lang-switch { padding: 5px; border-radius: 5px; border: 1px solid #ddd; cursor: pointer; } 
 
         .container { max-width: 900px; margin: 40px auto; padding: 0 20px; flex: 1; width: 100%; box-sizing: border-box; }
-        .card { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .card { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); position: relative; }
 
         h1 { color: var(--primary); margin-bottom: 5px; }
         .subtitle { color: #888; margin-bottom: 30px; font-size: 0.95rem; }
 
+        /* 隨機按鈕 - 放在右上角 */
+        .btn-random {
+            position: absolute; top: 30px; right: 30px;
+            background: #fdcb6e; color: #d35400; border: none; padding: 10px 20px; 
+            border-radius: 50px; cursor: pointer; font-weight: bold; 
+            box-shadow: 0 4px 10px rgba(253, 203, 110, 0.4); transition: 0.3s;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .btn-random:hover { transform: scale(1.05); background: #ffeaa7; }
+        @media (max-width: 600px) { .btn-random { position: relative; top: 0; right: 0; margin-bottom: 20px; width: 100%; justify-content: center;} }
+
         /* 表單樣式 */
-        .section-title { font-size: 0.9rem; font-weight: bold; text-transform: uppercase; color: #b2bec3; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 20px;}
+        .section-title { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: #b2bec3; margin-bottom: 15px; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; margin-top: 25px; letter-spacing: 1px;}
         .form-group { margin-bottom: 15px; }
         label { display: block; font-weight: 600; margin-bottom: 8px; color: #444; font-size: 0.9rem; }
         
-        input[type="text"], textarea, select { width: 100%; padding: 12px; border: 2px solid #e1e1e1; border-radius: 8px; font-size: 1rem; box-sizing: border-box; transition: 0.3s; background: #fafafa; }
+        input[type="text"], textarea, select { width: 100%; padding: 12px; border: 2px solid #e1e1e1; border-radius: 8px; font-size: 0.95rem; box-sizing: border-box; transition: 0.3s; background: #fafafa; }
         input[type="text"]:focus, textarea:focus, select:focus { border-color: var(--primary); background: #fff; outline: none; }
         
         textarea { height: 80px; resize: vertical; }
@@ -40,21 +51,21 @@
         .range-header { display: flex; justify-content: space-between; font-size: 0.85rem; color: #666; }
 
         /* 開關樣式 */
-        .toggle-wrapper { display: flex; align-items: center; justify-content: space-between; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #eee; }
-        .toggle-label { font-size: 0.9rem; font-weight: bold; }
+        .toggle-wrapper { display: flex; align-items: center; justify-content: space-between; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #eee; height: 46px; box-sizing: border-box; margin-top: 28px;}
+        .toggle-label { font-size: 0.9rem; font-weight: bold; color: var(--primary); }
         input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--primary); }
 
         /* 按鈕 */
-        .btn-generate { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; border: none; padding: 16px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; margin-top: 30px; box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3); }
+        .btn-generate { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; border: none; padding: 16px; font-size: 1.2rem; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; margin-top: 30px; box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3); }
         .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4); }
 
         /* 結果區 */
-        .result-area { margin-top: 30px; background: #2d3436; padding: 20px; border-radius: 10px; position: relative; }
+        .result-area { margin-top: 30px; background: #2d3436; padding: 25px; border-radius: 10px; position: relative; border: 1px solid #444; }
         .result-label { color: #dfe6e9; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; display: block; letter-spacing: 1px; }
-        #result-output { background: transparent; border: none; color: #00cec9; font-family: 'Courier New', monospace; font-size: 1.1rem; height: auto; min-height: 100px; }
+        #result-output { background: transparent; border: none; color: #55efc4; font-family: 'Courier New', monospace; font-size: 1.1rem; height: auto; min-height: 100px; line-height: 1.6; }
         
-        .copy-btn { background: #00b894; color: white; border: none; padding: 8px 20px; border-radius: 6px; cursor: pointer; position: absolute; top: 15px; right: 15px; font-weight: bold; font-size: 0.9rem; }
-        .copy-btn:hover { background: #00a884; }
+        .copy-btn { background: #00b894; color: white; border: none; padding: 8px 20px; border-radius: 6px; cursor: pointer; position: absolute; top: 20px; right: 20px; font-weight: bold; font-size: 0.9rem; transition: 0.2s;}
+        .copy-btn:hover { background: #00a884; transform: scale(1.05); }
 
         .ad-slot { background: #f0f0f0; height: 100px; margin: 20px 0; display: flex; align-items: center; justify-content: center; color: #999; }
         
@@ -86,13 +97,15 @@
 
     <div class="container">
         <div class="card">
-            <h1 data-i18n="title">AI Prompt Generator Pro</h1>
-            <p class="subtitle" data-i18n="desc">Advanced prompt builder for Midjourney v6, Niji, and Stable Diffusion.</p>
+            <h1 data-i18n="title">AI Prompt Generator Ultimate</h1>
+            <p class="subtitle" data-i18n="desc">The most advanced prompt builder for Midjourney v6, Niji, and Stable Diffusion.</p>
             
-            <div class="section-title">1. Core Description</div>
+            <button class="btn-random" onclick="randomize()">🎲 <span data-i18n="btn_random">Surprise Me (Random)</span></button>
+
+            <div class="section-title">1. Composition & Content</div>
             <div class="form-group">
                 <label data-i18n="lbl_subject">Subject (What do you want to see?)</label>
-                <textarea id="subject" placeholder="e.g., A cyberpunk girl standing in the rain, neon lights, holding a katana..."></textarea>
+                <textarea id="subject" placeholder="e.g., A cyberpunk girl standing in the rain... (Leave empty for random subject)"></textarea>
             </div>
 
             <div class="row">
@@ -101,28 +114,44 @@
                     <select id="style">
                         <option value="">None</option>
                         <option value="Cyberpunk">Cyberpunk</option>
+                        <option value="Steampunk">Steampunk</option>
+                        <option value="Vaporwave">Vaporwave</option>
                         <option value="Anime Style">Anime Style (Niji)</option>
                         <option value="Photorealistic">Photorealistic (8k)</option>
                         <option value="Oil Painting">Oil Painting</option>
-                        <option value="Concept Art">Concept Art</option>
-                        <option value="Ukiyo-e">Ukiyo-e</option>
+                        <option value="Watercolor">Watercolor</option>
+                        <option value="Ukiyo-e">Ukiyo-e (Japanese Woodblock)</option>
                         <option value="Pixar Style">Pixar 3D Style</option>
-                        <option value="Cinematic">Cinematic Movie Shot</option>
+                        <option value="Low Poly">Low Poly</option>
+                        <option value="Isometric">Isometric View</option>
+                        <option value="Graffiti">Street Graffiti</option>
+                        <option value="Gothic">Gothic / Dark Fantasy</option>
+                        <option value="Noir">Film Noir (B&W)</option>
+                        <option value="Pixel Art">Pixel Art (16-bit)</option>
+                        <option value="Papercut">Papercut Craft</option>
+                        <option value="Origami">Origami Style</option>
+                        <option value="Stained Glass">Stained Glass Window</option>
                     </select>
                 </div>
                 <div class="col form-group">
-                    <label data-i18n="lbl_camera">Camera Angle</label>
-                    <select id="camera">
+                    <label data-i18n="lbl_medium">Material / Medium</label>
+                    <select id="medium">
                         <option value="">None</option>
-                        <option value="Wide Angle">Wide Angle</option>
-                        <option value="Macro Lens">Macro Lens (Close-up)</option>
-                        <option value="Drone View">Drone View (Aerial)</option>
-                        <option value="Fish-eye Lens">Fish-eye Lens</option>
-                        <option value="Low Angle">Low Angle</option>
+                        <option value="Made of Crystal">Glass / Crystal</option>
+                        <option value="Made of Liquid Metal">Liquid Metal</option>
+                        <option value="Made of Smoke">Smoke / Fog</option>
+                        <option value="Made of Fire">Fire / Flames</option>
+                        <option value="Made of Flowers">Floral / Plants</option>
+                        <option value="Marble Statue">Marble Statue</option>
+                        <option value="Porcelain">Porcelain (Ceramic)</option>
+                        <option value="Yarn">Knitted Yarn / Wool</option>
+                        <option value="Neon Lights">Neon Tubes</option>
+                        <option value="Hologram">Hologram</option>
                     </select>
                 </div>
             </div>
 
+            <div class="section-title">2. Atmosphere & Camera</div>
             <div class="row">
                 <div class="col form-group">
                     <label data-i18n="lbl_lighting">Lighting</label>
@@ -130,18 +159,52 @@
                         <option value="">None</option>
                         <option value="Cinematic Lighting">Cinematic Lighting</option>
                         <option value="Natural Light">Natural Light</option>
-                        <option value="Neon Lights">Neon Lights</option>
+                        <option value="Studio Lighting">Studio Softbox</option>
+                        <option value="Bioluminescence">Bioluminescence (Glowing)</option>
+                        <option value="Rembrandt Lighting">Rembrandt Lighting</option>
                         <option value="Golden Hour">Golden Hour</option>
                         <option value="Volumetric Lighting">Volumetric Lighting (God rays)</option>
+                        <option value="Neon Lights">Neon Cyberpunk Light</option>
                     </select>
                 </div>
-                <div class="col form-group toggle-wrapper" style="margin-top: 28px;">
-                    <span class="toggle-label" data-i18n="lbl_magic">✨ Magic Enhance (Boost Quality)</span>
+                <div class="col form-group">
+                    <label data-i18n="lbl_palette">Color Palette</label>
+                    <select id="palette">
+                        <option value="">None</option>
+                        <option value="Vibrant Colors">Vibrant / Saturated</option>
+                        <option value="Pastel Colors">Pastel Colors</option>
+                        <option value="Black and White">Black and White</option>
+                        <option value="Sepia">Sepia / Vintage</option>
+                        <option value="Cool Tones">Cool Tones (Blue/Cyan)</option>
+                        <option value="Warm Tones">Warm Tones (Orange/Red)</option>
+                        <option value="Neon Palette">Neon Palette</option>
+                        <option value="Gold and Black">Gold and Black Luxury</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col form-group">
+                    <label data-i18n="lbl_camera">Camera Angle</label>
+                    <select id="camera">
+                        <option value="">None</option>
+                        <option value="Wide Angle">Wide Angle</option>
+                        <option value="Telephoto Lens">Telephoto Lens</option>
+                        <option value="Macro Lens">Macro Lens (Close-up)</option>
+                        <option value="Drone View">Drone View (Aerial)</option>
+                        <option value="Fish-eye Lens">Fish-eye Lens</option>
+                        <option value="Low Angle">Low Angle (Hero view)</option>
+                        <option value="Top Down">Top Down (Flat lay)</option>
+                        <option value="Selfie">Selfie Shot</option>
+                    </select>
+                </div>
+                <div class="col form-group toggle-wrapper">
+                    <span class="toggle-label" data-i18n="lbl_magic">✨ Magic Enhance (Quality Boost)</span>
                     <input type="checkbox" id="magic-mode" checked>
                 </div>
             </div>
 
-            <div class="section-title">2. Parameters (Midjourney)</div>
+            <div class="section-title">3. Midjourney Parameters</div>
             
             <div class="row">
                 <div class="col form-group">
@@ -151,6 +214,7 @@
                         <option value="--ar 16:9">Landscape (16:9)</option>
                         <option value="--ar 9:16">Portrait (9:16)</option>
                         <option value="--ar 21:9">Ultrawide (21:9)</option>
+                        <option value="--ar 3:2">Photo (3:2)</option>
                         <option value="--ar 4:3">TV (4:3)</option>
                     </select>
                 </div>
@@ -181,13 +245,13 @@
                 </div>
             </div>
 
-            <div class="section-title">3. Negative Prompt (Optional)</div>
+            <div class="section-title">4. Negative Prompt (Stable Diffusion)</div>
             <div class="form-group">
-                <input type="text" id="negative" placeholder="e.g., ugly, deformed, blurry, low quality, extra fingers...">
-                <small style="color:#999; font-size:0.8rem;" data-i18n="lbl_neg_desc">*Mostly for Stable Diffusion users.</small>
+                <input type="text" id="negative" placeholder="e.g., ugly, deformed, blurry, low quality, extra fingers, watermark...">
+                <small style="color:#999; font-size:0.8rem;" data-i18n="lbl_neg_desc">*Exclude items from the image.</small>
             </div>
 
-            <button class="btn-generate" onclick="generatePrompt()" data-i18n="btn_gen">✨ Generate Pro Prompt</button>
+            <button class="btn-generate" onclick="generatePrompt()" data-i18n="btn_gen">✨ Generate Ultimate Prompt</button>
 
             <div class="result-area">
                 <span class="result-label" data-i18n="lbl_result">Final Prompt to Copy:</span>
@@ -201,79 +265,79 @@
         <div class="seo-section">
             
             <div id="seo-en" class="seo-content">
-                <h2>Advanced AI Prompt Generator (Midjourney v6)</h2>
-                <p>Stop guessing! Use our <strong>AI Prompt Generator Pro</strong> to create high-quality images with Midjourney v6, Niji, and Stable Diffusion. Unlike basic tools, we allow you to control parameters like <strong>Stylize (--s)</strong>, <strong>Aspect Ratio (--ar)</strong>, and <strong>Negative Prompts</strong>.</p>
-                <h3>Features</h3>
+                <h2>The Ultimate AI Prompt Generator</h2>
+                <p>Welcome to the most comprehensive <strong>AI Prompt Builder</strong> on the web. Designed for <strong>Midjourney v6</strong>, <strong>Stable Diffusion</strong>, and <strong>DALL-E 3</strong>, this tool allows you to combine hundreds of art styles, lighting effects, and camera angles. Don't know what to create? Use our <strong>Randomize</strong> button to get instant inspiration!</p>
+                <h3>Why use this tool?</h3>
                 <ul>
-                    <li><strong>Magic Enhancer:</strong> Automatically adds high-quality keywords like "8k resolution", "Unreal Engine 5", "Masterpiece".</li>
-                    <li><strong>Parameter Control:</strong> Fine-tune your Midjourney settings (Stylize, Weirdness, Chaos) easily.</li>
-                    <li><strong>Negative Prompts:</strong> Remove unwanted elements like "blurry" or "deformed" for cleaner results.</li>
+                    <li><strong>Instant Inspiration:</strong> Use the "Surprise Me" button to generate unique random prompts instantly.</li>
+                    <li><strong>Massive Library:</strong> Choose from Cyberpunk, Ukiyo-e, Low Poly, and 20+ other styles and materials.</li>
+                    <li><strong>Full Control:</strong> Fine-tune every parameter including Aspect Ratio, Stylize, and Weirdness.</li>
                 </ul>
             </div>
 
             <div id="seo-zh-TW" class="seo-content">
-                <h2>專業 AI 繪圖提示詞生成器 (支援 Midjourney v6)</h2>
-                <p>別再盲猜咒語了！使用我們的 <strong>AI 提示詞生成器 Pro</strong>，為 Midjourney v6、Niji 和 Stable Diffusion 產生高品質圖片。不同於簡易工具，我們提供專業參數控制，如 <strong>風格化 (--s)</strong>、<strong>圖片比例 (--ar)</strong> 和 <strong>負面提示詞</strong>。</p>
-                <h3>專業功能</h3>
+                <h2>究極 AI 繪圖提示詞生成器 (Ultimate Version)</h2>
+                <p>歡迎使用網路上最強大的 <strong>AI 提示詞生成器</strong>。專為 <strong>Midjourney v6</strong>、<strong>Stable Diffusion</strong> 和 <strong>DALL-E 3</strong> 設計。無論是賽博龐克、水墨畫還是低多邊形風格，這裡應有盡有。不知道要畫什麼？試試我們的 <strong>隨機搭配 (Randomize)</strong> 按鈕，獲取無限靈感！</p>
+                <h3>為什麼選擇這個工具？</h3>
                 <ul>
-                    <li><strong>魔法畫質增強：</strong> 自動加入 "8k resolution", "Masterpiece" 等提升畫質的關鍵詞。</li>
-                    <li><strong>參數微調：</strong> 輕鬆調整 Midjourney 的風格化強度 (Stylize) 與怪異度 (Weirdness)。</li>
-                    <li><strong>負面提示詞：</strong> 針對 Stable Diffusion 玩家，可排除 "模糊" 或 "變形" 等不需要的元素。</li>
+                    <li><strong>隨機靈感 (Randomize)：</strong> 點擊「隨機搭配」按鈕，立即獲得獨一無二的創意咒語組合。</li>
+                    <li><strong>海量素材庫：</strong> 超過 20 種藝術風格與材質選擇 (玻璃、火焰、煙霧等)，讓 AI 畫出細節。</li>
+                    <li><strong>參數完全控制：</strong> 輕鬆調整風格化強度 (--s)、怪異度 (--w) 與圖片比例，支援最新 v6 模型。</li>
                 </ul>
             </div>
 
             <div id="seo-zh-CN" class="seo-content">
-                <h2>专业 AI 绘图提示词生成器 (支持 Midjourney v6)</h2>
-                <p>别再盲猜咒语了！使用我们的 <strong>AI 提示词生成器 Pro</strong>，为 Midjourney v6、Niji 和 Stable Diffusion 产生高质量图片。不同于简易工具，我们提供专业参数控制，如 <strong>风格化 (--s)</strong>、<strong>图片比例 (--ar)</strong> 和 <strong>负面提示词</strong>。</p>
-                <h3>专业功能</h3>
+                <h2>究极 AI 绘图提示词生成器 (Ultimate Version)</h2>
+                <p>欢迎使用网络上最强大的 <strong>AI 提示词生成器</strong>。专为 <strong>Midjourney v6</strong>、<strong>Stable Diffusion</strong> 和 <strong>DALL-E 3</strong> 设计。无论是赛博朋克、水墨画还是低多边形风格，这里应有尽有。不知道要画什么？试试我们的 <strong>随机搭配 (Randomize)</strong> 按钮，获取无限灵感！</p>
+                <h3>为什么选择这个工具？</h3>
                 <ul>
-                    <li><strong>魔法画质增强：</strong> 自动加入 "8k resolution", "Masterpiece" 等提升画质的关键词。</li>
-                    <li><strong>参数微调：</strong> 轻松调整 Midjourney 的风格化强度 (Stylize) 与怪异度 (Weirdness)。</li>
-                    <li><strong>负面提示词：</strong> 针对 Stable Diffusion 玩家，可排除 "模糊" 或 "变形" 等不需要的元素。</li>
+                    <li><strong>随机灵感 (Randomize)：</strong> 点击“随机搭配”按钮，立即获得独一无二的创意咒语组合。</li>
+                    <li><strong>海量素材库：</strong> 超过 20 种艺术风格与材质选择 (玻璃、火焰、烟雾等)，让 AI 画出细节。</li>
+                    <li><strong>参数完全控制：</strong> 轻松调整风格化强度 (--s)、怪异度 (--w) 与图片比例，支持最新 v6 模型。</li>
                 </ul>
             </div>
 
             <div id="seo-es" class="seo-content">
-                <h2>Generador de Prompts IA Pro</h2>
-                <p>Crea prompts profesionales para Midjourney v6 y Stable Diffusion. Controla parámetros avanzados como <strong>Stylize</strong>, <strong>Relación de aspecto</strong> y <strong>Prompts Negativos</strong>.</p>
-                <h3>Características Pro</h3>
+                <h2>Generador de Prompts IA Definitivo</h2>
+                <p>La herramienta más completa para Midjourney v6 y Stable Diffusion. Combina cientos de estilos, luces y ángulos. ¿Sin ideas? ¡Usa el botón <strong>Aleatorio</strong>!</p>
+                <h3>Características Principales</h3>
                 <ul>
-                    <li><strong>Mejora Mágica:</strong> Añade automáticamente palabras clave de alta calidad (8k, obra maestra).</li>
-                    <li><strong>Control de Parámetros:</strong> Ajusta la configuración de Midjourney fácilmente.</li>
-                    <li><strong>Prompts Negativos:</strong> Elimina elementos no deseados de tus imágenes.</li>
+                    <li><strong>Inspiración Aleatoria:</strong> Usa el botón "Sorpréndeme" para generar ideas únicas al instante.</li>
+                    <li><strong>Biblioteca Masiva:</strong> Elige entre Cyberpunk, Cristal, Fuego y más de 20 estilos.</li>
+                    <li><strong>Control Total:</strong> Ajusta Stylize, Relación de aspecto y parámetros avanzados.</li>
                 </ul>
             </div>
 
             <div id="seo-pt" class="seo-content">
-                <h2>Gerador de Prompts IA Pro</h2>
-                <p>Crie prompts profissionais para Midjourney v6 e Stable Diffusion. Controle parâmetros avançados como <strong>Stylize</strong>, <strong>Proporção</strong> e <strong>Prompts Negativos</strong>.</p>
-                <h3>Recursos Pro</h3>
+                <h2>Gerador de Prompts IA Definitivo</h2>
+                <p>A ferramenta mais completa para Midjourney v6 e Stable Diffusion. Combine centenas de estilos, luzes e ângulos. Sem ideias? Use o botão <strong>Aleatório</strong>!</p>
+                <h3>Principais Recursos</h3>
                 <ul>
-                    <li><strong>Melhoria Mágica:</strong> Adiciona automaticamente palavras-chave de alta qualidade (8k, obra-prima).</li>
-                    <li><strong>Controle de Parâmetros:</strong> Ajuste as configurações do Midjourney facilmente.</li>
-                    <li><strong>Prompts Negativos:</strong> Remova elementos indesejados de suas imagens.</li>
+                    <li><strong>Inspiração Aleatória:</strong> Use o botão "Surpreenda-me" para gerar ideias únicas instantaneamente.</li>
+                    <li><strong>Biblioteca Massiva:</strong> Escolha entre Cyberpunk, Cristal, Fogo e mais de 20 estilos.</li>
+                    <li><strong>Controle Total:</strong> Ajuste Stylize, Proporção e parâmetros avançados.</li>
                 </ul>
             </div>
 
             <div id="seo-fr" class="seo-content">
-                <h2>Générateur de Prompts IA Pro</h2>
-                <p>Créez des prompts professionnels pour Midjourney v6 et Stable Diffusion. Contrôlez des paramètres avancés comme <strong>Stylize</strong>, <strong>Ratio</strong> et <strong>Prompts Négatifs</strong>.</p>
-                <h3>Fonctionnalités Pro</h3>
+                <h2>Générateur de Prompts IA Ultime</h2>
+                <p>L'outil le plus complet pour Midjourney v6 et Stable Diffusion. Combinez des centaines de styles, lumières et angles. Pas d'idées ? Utilisez le bouton <strong>Aléatoire</strong> !</p>
+                <h3>Fonctionnalités Clés</h3>
                 <ul>
-                    <li><strong>Amélioration Magique :</strong> Ajoute automatiquement des mots-clés de haute qualité (8k, chef-d'œuvre).</li>
-                    <li><strong>Contrôle des Paramètres :</strong> Ajustez facilement les réglages de Midjourney.</li>
-                    <li><strong>Prompts Négatifs :</strong> Supprimez les éléments indésirables de vos images.</li>
+                    <li><strong>Inspiration Aléatoire :</strong> Utilisez le bouton "Surprenez-moi" pour générer des idées uniques instantanément.</li>
+                    <li><strong>Bibliothèque Massive :</strong> Choisissez parmi Cyberpunk, Verre, Feu et plus de 20 styles.</li>
+                    <li><strong>Contrôle Total :</strong> Ajustez Stylize, Ratio et paramètres avancés.</li>
                 </ul>
             </div>
 
             <div id="seo-de" class="seo-content">
-                <h2>AI Prompt Generator Pro</h2>
-                <p>Erstellen Sie professionelle Prompts für Midjourney v6 und Stable Diffusion. Steuern Sie erweiterte Parameter wie <strong>Stylize</strong>, <strong>Seitenverhältnis</strong> und <strong>Negative Prompts</strong>.</p>
-                <h3>Pro-Funktionen</h3>
+                <h2>Ultimativer AI Prompt Generator</h2>
+                <p>Das umfassendste Tool für Midjourney v6 und Stable Diffusion. Kombinieren Sie Hunderte von Stilen, Lichtern und Winkeln. Keine Ideen? Benutzen Sie den <strong>Zufallsgenerator</strong>!</p>
+                <h3>Hauptfunktionen</h3>
                 <ul>
-                    <li><strong>Magische Verbesserung:</strong> Fügt automatisch hochwertige Schlüsselwörter hinzu (8k, Meisterwerk).</li>
-                    <li><strong>Parametersteuerung:</strong> Passen Sie die Midjourney-Einstellungen einfach an.</li>
-                    <li><strong>Negative Prompts:</strong> Entfernen Sie unerwünschte Elemente aus Ihren Bildern.</li>
+                    <li><strong>Sofortige Inspiration:</strong> Verwenden Sie den "Überraschen Sie mich"-Button für einzigartige Ideen.</li>
+                    <li><strong>Riesige Bibliothek:</strong> Wählen Sie aus Cyberpunk, Glas, Feuer und über 20 Stilen.</li>
+                    <li><strong>Volle Kontrolle:</strong> Passen Sie Stylize, Seitenverhältnis und erweiterte Parameter an.</li>
                 </ul>
             </div>
 
@@ -288,46 +352,53 @@
     <script>
         const translations = {
             "en": {
-                nav_home: "Home", title: "AI Prompt Generator Pro", desc: "Advanced prompt builder for Midjourney v6, Niji, and Stable Diffusion.",
-                lbl_subject: "Subject (What do you want to see?)", lbl_style: "Art Style", lbl_lighting: "Lighting", lbl_camera: "Camera Angle", lbl_magic: "✨ Magic Enhance (Boost Quality)",
+                nav_home: "Home", title: "AI Prompt Generator Ultimate", desc: "The most advanced prompt builder for Midjourney v6, Niji, and Stable Diffusion.",
+                btn_random: "Surprise Me (Random)", lbl_subject: "Subject (What do you want to see?)", lbl_style: "Art Style", lbl_medium: "Material / Medium",
+                lbl_lighting: "Lighting", lbl_palette: "Color Palette", lbl_camera: "Camera Angle", lbl_magic: "✨ Magic Enhance (Quality Boost)",
                 lbl_ratio: "Aspect Ratio (--ar)", lbl_version: "Model Version (--v)", lbl_stylize: "Stylize (--s 0-1000)", lbl_weird: "Weirdness (--w 0-3000)",
-                lbl_neg_desc: "*Mostly for Stable Diffusion users.", btn_gen: "✨ Generate Pro Prompt", lbl_result: "Final Prompt to Copy:", btn_copy: "COPY"
+                lbl_neg_desc: "*Exclude items from the image.", btn_gen: "✨ Generate Ultimate Prompt", lbl_result: "Final Prompt to Copy:", btn_copy: "COPY"
             },
             "zh-TW": {
-                nav_home: "首頁", title: "AI 提示詞生成器 Pro", desc: "支援 Midjourney v6、Niji 和 Stable Diffusion 的專業咒語產生器。",
-                lbl_subject: "主體描述 (想要畫什麼?)", lbl_style: "藝術風格", lbl_lighting: "光線氛圍", lbl_camera: "鏡頭視角", lbl_magic: "✨ 魔法畫質增強 (自動優化)",
+                nav_home: "首頁", title: "究極 AI 提示詞生成器", desc: "支援 Midjourney v6、Niji 和 Stable Diffusion 的最強咒語產生器。",
+                btn_random: "隨機搭配 (給我靈感)", lbl_subject: "主體描述 (想要畫什麼?)", lbl_style: "藝術風格", lbl_medium: "特殊材質",
+                lbl_lighting: "光線氛圍", lbl_palette: "色調風格", lbl_camera: "鏡頭視角", lbl_magic: "✨ 魔法畫質增強 (自動優化)",
                 lbl_ratio: "圖片比例 (--ar)", lbl_version: "模型版本 (--v)", lbl_stylize: "風格化強度 (--s)", lbl_weird: "怪異度 (--w)",
-                lbl_neg_desc: "*主要是給 Stable Diffusion 使用者 (負面提示詞)。", btn_gen: "✨ 生成專業咒語", lbl_result: "複製您的咒語：", btn_copy: "複製"
+                lbl_neg_desc: "*排除不需要的元素 (負面提示詞)。", btn_gen: "✨ 生成究極咒語", lbl_result: "複製您的咒語：", btn_copy: "複製"
             },
             "zh-CN": {
-                nav_home: "首页", title: "AI 提示词生成器 Pro", desc: "支持 Midjourney v6、Niji 和 Stable Diffusion 的专业咒语产生器。",
-                lbl_subject: "主体描述 (想要画什么?)", lbl_style: "艺术风格", lbl_lighting: "光线氛围", lbl_camera: "镜头视角", lbl_magic: "✨ 魔法画质增强 (自动优化)",
+                nav_home: "首页", title: "究极 AI 提示词生成器", desc: "支持 Midjourney v6、Niji 和 Stable Diffusion 的最强咒语产生器。",
+                btn_random: "随机搭配 (给我灵感)", lbl_subject: "主体描述 (想要画什么?)", lbl_style: "艺术风格", lbl_medium: "特殊材质",
+                lbl_lighting: "光线氛围", lbl_palette: "色调风格", lbl_camera: "镜头视角", lbl_magic: "✨ 魔法画质增强 (自动优化)",
                 lbl_ratio: "图片比例 (--ar)", lbl_version: "模型版本 (--v)", lbl_stylize: "风格化强度 (--s)", lbl_weird: "怪异度 (--w)",
-                lbl_neg_desc: "*主要是给 Stable Diffusion 使用者 (负面提示词)。", btn_gen: "✨ 生成专业咒语", lbl_result: "复制您的咒语：", btn_copy: "复制"
+                lbl_neg_desc: "*排除不需要的元素 (负面提示词)。", btn_gen: "✨ 生成究极咒语", lbl_result: "复制您的咒语：", btn_copy: "复制"
             },
             "es": {
-                nav_home: "Inicio", title: "Generador de Prompts Pro", desc: "Constructor avanzado para Midjourney v6 y SD.",
-                lbl_subject: "Sujeto", lbl_style: "Estilo", lbl_lighting: "Iluminación", lbl_camera: "Cámara", lbl_magic: "✨ Mejora Mágica",
+                nav_home: "Inicio", title: "Generador Definitivo", desc: "Constructor avanzado para Midjourney v6 y SD.",
+                btn_random: "Sorpréndeme (Aleatorio)", lbl_subject: "Sujeto", lbl_style: "Estilo", lbl_medium: "Material",
+                lbl_lighting: "Iluminación", lbl_palette: "Paleta", lbl_camera: "Cámara", lbl_magic: "✨ Mejora Mágica",
                 lbl_ratio: "Proporción", lbl_version: "Versión", lbl_stylize: "Estilizar", lbl_weird: "Rareza",
-                lbl_neg_desc: "*Para usuarios de Stable Diffusion.", btn_gen: "✨ Generar Prompt", lbl_result: "Prompt Final:", btn_copy: "COPIAR"
+                lbl_neg_desc: "*Excluir elementos.", btn_gen: "✨ Generar", lbl_result: "Prompt Final:", btn_copy: "COPIAR"
             },
             "pt": {
-                nav_home: "Início", title: "Gerador de Prompts Pro", desc: "Construtor avançado para Midjourney v6 e SD.",
-                lbl_subject: "Assunto", lbl_style: "Estilo", lbl_lighting: "Iluminação", lbl_camera: "Câmera", lbl_magic: "✨ Melhoria Mágica",
+                nav_home: "Início", title: "Gerador Definitivo", desc: "Construtor avançado para Midjourney v6 e SD.",
+                btn_random: "Surpreenda-me (Aleatório)", lbl_subject: "Assunto", lbl_style: "Estilo", lbl_medium: "Material",
+                lbl_lighting: "Iluminação", lbl_palette: "Paleta", lbl_camera: "Câmera", lbl_magic: "✨ Melhoria Mágica",
                 lbl_ratio: "Proporção", lbl_version: "Versão", lbl_stylize: "Estilizar", lbl_weird: "Estranheza",
-                lbl_neg_desc: "*Para usuários de Stable Diffusion.", btn_gen: "✨ Gerar Prompt", lbl_result: "Prompt Final:", btn_copy: "COPIAR"
+                lbl_neg_desc: "*Excluir elementos.", btn_gen: "✨ Gerar", lbl_result: "Prompt Final:", btn_copy: "COPIAR"
             },
             "fr": {
-                nav_home: "Accueil", title: "Générateur de Prompts Pro", desc: "Constructeur avancé pour Midjourney v6 et SD.",
-                lbl_subject: "Sujet", lbl_style: "Style", lbl_lighting: "Éclairage", lbl_camera: "Caméra", lbl_magic: "✨ Amélioration Magique",
+                nav_home: "Accueil", title: "Générateur Ultime", desc: "Constructeur avancé pour Midjourney v6 et SD.",
+                btn_random: "Surprenez-moi (Aléatoire)", lbl_subject: "Sujet", lbl_style: "Style", lbl_medium: "Matériel",
+                lbl_lighting: "Éclairage", lbl_palette: "Palette", lbl_camera: "Caméra", lbl_magic: "✨ Amélioration Magique",
                 lbl_ratio: "Ratio", lbl_version: "Version", lbl_stylize: "Styliser", lbl_weird: "Bizarrerie",
-                lbl_neg_desc: "*Pour les utilisateurs de Stable Diffusion.", btn_gen: "✨ Générer Prompt", lbl_result: "Prompt Final:", btn_copy: "COPIER"
+                lbl_neg_desc: "*Exclure des éléments.", btn_gen: "✨ Générer", lbl_result: "Prompt Final:", btn_copy: "COPIER"
             },
             "de": {
-                nav_home: "Startseite", title: "Prompt Generator Pro", desc: "Erweiterter Builder für Midjourney v6 und SD.",
-                lbl_subject: "Betreff", lbl_style: "Stil", lbl_lighting: "Beleuchtung", lbl_camera: "Kamera", lbl_magic: "✨ Magische Verbesserung",
+                nav_home: "Startseite", title: "Ultimativer Generator", desc: "Erweiterter Builder für Midjourney v6 und SD.",
+                btn_random: "Überraschen Sie mich", lbl_subject: "Betreff", lbl_style: "Stil", lbl_medium: "Material",
+                lbl_lighting: "Beleuchtung", lbl_palette: "Palette", lbl_camera: "Kamera", lbl_magic: "✨ Magische Verbesserung",
                 lbl_ratio: "Verhältnis", lbl_version: "Version", lbl_stylize: "Stilisieren", lbl_weird: "Seltsamkeit",
-                lbl_neg_desc: "*Für Stable Diffusion Benutzer.", btn_gen: "✨ Prompt Generieren", lbl_result: "Finaler Prompt:", btn_copy: "KOPIEREN"
+                lbl_neg_desc: "*Elemente ausschließen.", btn_gen: "✨ Generieren", lbl_result: "Finaler Prompt:", btn_copy: "KOPIEREN"
             }
         };
 
@@ -353,10 +424,50 @@
         document.getElementById("year").innerText = new Date().getFullYear();
         setLanguage(savedLang);
 
+        const randomSubjects = [
+            "A futuristic cyberpunk city", "A cute cat wearing sunglasses", "An astronaut riding a horse",
+            "A magical forest with glowing mushrooms", "A detailed portrait of a warrior princess",
+            "A giant robot fighting a dragon", "A peaceful zen garden in spring", "A flying car in the clouds"
+        ];
+
+        function randomize() {
+            // Random Subject (only if empty)
+            const subjectField = document.getElementById('subject');
+            if (!subjectField.value) {
+                subjectField.value = randomSubjects[Math.floor(Math.random() * randomSubjects.length)];
+            }
+
+            // Helper to pick random option
+            const pick = (id) => {
+                const select = document.getElementById(id);
+                const options = [...select.options].map(o => o.value).filter(v => v);
+                if (options.length) select.value = options[Math.floor(Math.random() * options.length)];
+            };
+
+            pick('style');
+            pick('medium');
+            pick('lighting');
+            pick('palette');
+            pick('camera');
+            pick('ratio');
+            
+            // Random parameters
+            document.getElementById('stylize').value = Math.floor(Math.random() * 900) + 100;
+            document.getElementById('stylize-val').innerText = document.getElementById('stylize').value;
+            
+            document.getElementById('weird').value = Math.floor(Math.random() * 500); // Keep weirdness subtle
+            document.getElementById('weird-val').innerText = document.getElementById('weird').value;
+
+            // Trigger generation
+            generatePrompt();
+        }
+
         function generatePrompt() {
             const subject = document.getElementById('subject').value.trim();
             const style = document.getElementById('style').value;
+            const medium = document.getElementById('medium').value;
             const lighting = document.getElementById('lighting').value;
+            const palette = document.getElementById('palette').value;
             const camera = document.getElementById('camera').value;
             const isMagic = document.getElementById('magic-mode').checked;
             const ratio = document.getElementById('ratio').value;
@@ -367,12 +478,14 @@
 
             let promptParts = [];
 
-            // 1. Subject (Required)
+            // 1. Subject
             if (subject) promptParts.push(subject);
 
             // 2. Descriptors
             if (style) promptParts.push(style);
+            if (medium) promptParts.push(medium);
             if (lighting) promptParts.push(lighting);
+            if (palette) promptParts.push(palette);
             if (camera) promptParts.push(camera);
 
             // 3. Magic Enhancer
@@ -384,23 +497,23 @@
             let params = [];
             if (ratio) params.push(ratio);
             if (version) params.push(version);
-            if (stylize != 100) params.push(`--s ${stylize}`); // Default is 100, only show if changed
+            if (stylize != 100) params.push(`--s ${stylize}`);
             if (weird != 0) params.push(`--w ${weird}`);
 
             let finalPrompt = promptParts.join(", ");
             
-            // Add Params at the end
+            // Add Params
             if (params.length > 0) {
                 finalPrompt += " " + params.join(" ");
             }
 
-            // Add Negative Prompt (Stable Diffusion Syntax)
+            // Add Negative
             if (negative) {
                 finalPrompt += ` --no ${negative}`;
             }
 
             if (!subject) {
-                document.getElementById('result-output').value = "Please enter a subject description first.";
+                document.getElementById('result-output').value = "Please enter a subject description or click 'Randomize'!";
             } else {
                 document.getElementById('result-output').value = finalPrompt;
             }
