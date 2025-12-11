@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Art Prompt Generator Ultimate - Midjourney, Stable Diffusion, DALL-E 3</title>
+    <title>AI Art Prompt Generator - Midjourney, Stable Diffusion, DALL-E 3</title>
     <style>
-        :root { --primary: #6c5ce7; --secondary: #00cec9; --bg: #f4f6f8; --white: #ffffff; --text: #2d3436; }
+        /* ★★★ 修正：主色改回標準藍 #0066cc (維持網站統一) ★★★ */
+        :root { --primary: #0066cc; --secondary: #00cec9; --bg: #f4f6f8; --white: #ffffff; --text: #2d3436; }
         body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; color: var(--text); display: flex; flex-direction: column; min-height: 100vh;}
         
         /* 導覽列 */
@@ -18,10 +19,11 @@
         .container { max-width: 900px; margin: 40px auto; padding: 0 20px; flex: 1; width: 100%; box-sizing: border-box; }
         .card { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); position: relative; }
 
-        h1 { color: var(--primary); margin-bottom: 5px; }
+        /* ★★★ 只有標題是黑色的 ★★★ */
+        h1 { color: #000000; margin-bottom: 5px; }
         .subtitle { color: #888; margin-bottom: 30px; font-size: 0.95rem; }
 
-        /* 隨機按鈕 - 放在右上角 */
+        /* 隨機按鈕 - 維持黃色亮點 */
         .btn-random {
             position: absolute; top: 30px; right: 30px;
             background: #fdcb6e; color: #d35400; border: none; padding: 10px 20px; 
@@ -55,9 +57,13 @@
         .toggle-label { font-size: 0.9rem; font-weight: bold; color: var(--primary); }
         input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--primary); }
 
-        /* 按鈕 */
-        .btn-generate { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; border: none; padding: 16px; font-size: 1.2rem; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; margin-top: 30px; box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3); }
-        .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4); }
+        /* 按鈕 (改回藍色漸層) */
+        .btn-generate { 
+            background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%); 
+            color: white; border: none; padding: 16px; font-size: 1.2rem; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; margin-top: 30px; 
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3); 
+        }
+        .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4); }
 
         /* 結果區 */
         .result-area { margin-top: 30px; background: #2d3436; padding: 25px; border-radius: 10px; position: relative; border: 1px solid #444; }
@@ -97,7 +103,7 @@
 
     <div class="container">
         <div class="card">
-            <h1 data-i18n="title">AI Prompt Generator Ultimate</h1>
+            <h1 data-i18n="title">AI Art Prompt Generator</h1>
             <p class="subtitle" data-i18n="desc">The most advanced prompt builder for Midjourney v6, Niji, and Stable Diffusion.</p>
             
             <button class="btn-random" onclick="randomize()">🎲 <span data-i18n="btn_random">Surprise Me (Random)</span></button>
@@ -251,7 +257,7 @@
                 <small style="color:#999; font-size:0.8rem;" data-i18n="lbl_neg_desc">*Exclude items from the image.</small>
             </div>
 
-            <button class="btn-generate" onclick="generatePrompt()" data-i18n="btn_gen">✨ Generate Ultimate Prompt</button>
+            <button class="btn-generate" onclick="generatePrompt()" data-i18n="btn_gen">✨ Generate Prompt</button>
 
             <div class="result-area">
                 <span class="result-label" data-i18n="lbl_result">Final Prompt to Copy:</span>
@@ -265,7 +271,7 @@
         <div class="seo-section">
             
             <div id="seo-en" class="seo-content">
-                <h2>The Ultimate AI Prompt Generator</h2>
+                <h2>AI Art Prompt Generator</h2>
                 <p>Welcome to the most comprehensive <strong>AI Prompt Builder</strong> on the web. Designed for <strong>Midjourney v6</strong>, <strong>Stable Diffusion</strong>, and <strong>DALL-E 3</strong>, this tool allows you to combine hundreds of art styles, lighting effects, and camera angles. Don't know what to create? Use our <strong>Randomize</strong> button to get instant inspiration!</p>
                 <h3>Why use this tool?</h3>
                 <ul>
@@ -276,7 +282,7 @@
             </div>
 
             <div id="seo-zh-TW" class="seo-content">
-                <h2>究極 AI 繪圖提示詞生成器 (Ultimate Version)</h2>
+                <h2>AI 繪圖提示詞生成器</h2>
                 <p>歡迎使用網路上最強大的 <strong>AI 提示詞生成器</strong>。專為 <strong>Midjourney v6</strong>、<strong>Stable Diffusion</strong> 和 <strong>DALL-E 3</strong> 設計。無論是賽博龐克、水墨畫還是低多邊形風格，這裡應有盡有。不知道要畫什麼？試試我們的 <strong>隨機搭配 (Randomize)</strong> 按鈕，獲取無限靈感！</p>
                 <h3>為什麼選擇這個工具？</h3>
                 <ul>
@@ -287,7 +293,7 @@
             </div>
 
             <div id="seo-zh-CN" class="seo-content">
-                <h2>究极 AI 绘图提示词生成器 (Ultimate Version)</h2>
+                <h2>AI 绘图提示词生成器</h2>
                 <p>欢迎使用网络上最强大的 <strong>AI 提示词生成器</strong>。专为 <strong>Midjourney v6</strong>、<strong>Stable Diffusion</strong> 和 <strong>DALL-E 3</strong> 设计。无论是赛博朋克、水墨画还是低多边形风格，这里应有尽有。不知道要画什么？试试我们的 <strong>随机搭配 (Randomize)</strong> 按钮，获取无限灵感！</p>
                 <h3>为什么选择这个工具？</h3>
                 <ul>
@@ -298,7 +304,7 @@
             </div>
 
             <div id="seo-es" class="seo-content">
-                <h2>Generador de Prompts IA Definitivo</h2>
+                <h2>Generador de Prompts de Arte IA</h2>
                 <p>La herramienta más completa para Midjourney v6 y Stable Diffusion. Combina cientos de estilos, luces y ángulos. ¿Sin ideas? ¡Usa el botón <strong>Aleatorio</strong>!</p>
                 <h3>Características Principales</h3>
                 <ul>
@@ -309,7 +315,7 @@
             </div>
 
             <div id="seo-pt" class="seo-content">
-                <h2>Gerador de Prompts IA Definitivo</h2>
+                <h2>Gerador de Prompts de Arte IA</h2>
                 <p>A ferramenta mais completa para Midjourney v6 e Stable Diffusion. Combine centenas de estilos, luzes e ângulos. Sem ideias? Use o botão <strong>Aleatório</strong>!</p>
                 <h3>Principais Recursos</h3>
                 <ul>
@@ -320,7 +326,7 @@
             </div>
 
             <div id="seo-fr" class="seo-content">
-                <h2>Générateur de Prompts IA Ultime</h2>
+                <h2>Générateur de Prompts d'Art IA</h2>
                 <p>L'outil le plus complet pour Midjourney v6 et Stable Diffusion. Combinez des centaines de styles, lumières et angles. Pas d'idées ? Utilisez le bouton <strong>Aléatoire</strong> !</p>
                 <h3>Fonctionnalités Clés</h3>
                 <ul>
@@ -331,7 +337,7 @@
             </div>
 
             <div id="seo-de" class="seo-content">
-                <h2>Ultimativer AI Prompt Generator</h2>
+                <h2>AI Kunst Prompt Generator</h2>
                 <p>Das umfassendste Tool für Midjourney v6 und Stable Diffusion. Kombinieren Sie Hunderte von Stilen, Lichtern und Winkeln. Keine Ideen? Benutzen Sie den <strong>Zufallsgenerator</strong>!</p>
                 <h3>Hauptfunktionen</h3>
                 <ul>
@@ -352,49 +358,49 @@
     <script>
         const translations = {
             "en": {
-                nav_home: "Home", title: "AI Prompt Generator Ultimate", desc: "The most advanced prompt builder for Midjourney v6, Niji, and Stable Diffusion.",
+                nav_home: "Home", title: "AI Art Prompt Generator", desc: "The most advanced prompt builder for Midjourney v6, Niji, and Stable Diffusion.",
                 btn_random: "Surprise Me (Random)", lbl_subject: "Subject (What do you want to see?)", lbl_style: "Art Style", lbl_medium: "Material / Medium",
                 lbl_lighting: "Lighting", lbl_palette: "Color Palette", lbl_camera: "Camera Angle", lbl_magic: "✨ Magic Enhance (Quality Boost)",
                 lbl_ratio: "Aspect Ratio (--ar)", lbl_version: "Model Version (--v)", lbl_stylize: "Stylize (--s 0-1000)", lbl_weird: "Weirdness (--w 0-3000)",
-                lbl_neg_desc: "*Exclude items from the image.", btn_gen: "✨ Generate Ultimate Prompt", lbl_result: "Final Prompt to Copy:", btn_copy: "COPY"
+                lbl_neg_desc: "*Exclude items from the image.", btn_gen: "✨ Generate Prompt", lbl_result: "Final Prompt to Copy:", btn_copy: "COPY"
             },
             "zh-TW": {
-                nav_home: "首頁", title: "究極 AI 提示詞生成器", desc: "支援 Midjourney v6、Niji 和 Stable Diffusion 的最強咒語產生器。",
+                nav_home: "首頁", title: "AI 繪圖提示詞生成器", desc: "支援 Midjourney v6、Niji 和 Stable Diffusion 的最強咒語產生器。",
                 btn_random: "隨機搭配 (給我靈感)", lbl_subject: "主體描述 (想要畫什麼?)", lbl_style: "藝術風格", lbl_medium: "特殊材質",
                 lbl_lighting: "光線氛圍", lbl_palette: "色調風格", lbl_camera: "鏡頭視角", lbl_magic: "✨ 魔法畫質增強 (自動優化)",
                 lbl_ratio: "圖片比例 (--ar)", lbl_version: "模型版本 (--v)", lbl_stylize: "風格化強度 (--s)", lbl_weird: "怪異度 (--w)",
-                lbl_neg_desc: "*排除不需要的元素 (負面提示詞)。", btn_gen: "✨ 生成究極咒語", lbl_result: "複製您的咒語：", btn_copy: "複製"
+                lbl_neg_desc: "*排除不需要的元素 (負面提示詞)。", btn_gen: "✨ 生成咒語", lbl_result: "複製您的咒語：", btn_copy: "複製"
             },
             "zh-CN": {
-                nav_home: "首页", title: "究极 AI 提示词生成器", desc: "支持 Midjourney v6、Niji 和 Stable Diffusion 的最强咒语产生器。",
+                nav_home: "首页", title: "AI 绘图提示词生成器", desc: "支持 Midjourney v6、Niji 和 Stable Diffusion 的最强咒语产生器。",
                 btn_random: "随机搭配 (给我灵感)", lbl_subject: "主体描述 (想要画什么?)", lbl_style: "艺术风格", lbl_medium: "特殊材质",
                 lbl_lighting: "光线氛围", lbl_palette: "色调风格", lbl_camera: "镜头视角", lbl_magic: "✨ 魔法画质增强 (自动优化)",
                 lbl_ratio: "图片比例 (--ar)", lbl_version: "模型版本 (--v)", lbl_stylize: "风格化强度 (--s)", lbl_weird: "怪异度 (--w)",
-                lbl_neg_desc: "*排除不需要的元素 (负面提示词)。", btn_gen: "✨ 生成究极咒语", lbl_result: "复制您的咒语：", btn_copy: "复制"
+                lbl_neg_desc: "*排除不需要的元素 (负面提示词)。", btn_gen: "✨ 生成咒语", lbl_result: "复制您的咒语：", btn_copy: "复制"
             },
             "es": {
-                nav_home: "Inicio", title: "Generador Definitivo", desc: "Constructor avanzado para Midjourney v6 y SD.",
+                nav_home: "Inicio", title: "Generador de Prompts de Arte IA", desc: "Constructor avanzado para Midjourney v6 y SD.",
                 btn_random: "Sorpréndeme (Aleatorio)", lbl_subject: "Sujeto", lbl_style: "Estilo", lbl_medium: "Material",
                 lbl_lighting: "Iluminación", lbl_palette: "Paleta", lbl_camera: "Cámara", lbl_magic: "✨ Mejora Mágica",
                 lbl_ratio: "Proporción", lbl_version: "Versión", lbl_stylize: "Estilizar", lbl_weird: "Rareza",
                 lbl_neg_desc: "*Excluir elementos.", btn_gen: "✨ Generar", lbl_result: "Prompt Final:", btn_copy: "COPIAR"
             },
             "pt": {
-                nav_home: "Início", title: "Gerador Definitivo", desc: "Construtor avançado para Midjourney v6 e SD.",
+                nav_home: "Início", title: "Gerador de Prompts de Arte IA", desc: "Construtor avançado para Midjourney v6 e SD.",
                 btn_random: "Surpreenda-me (Aleatório)", lbl_subject: "Assunto", lbl_style: "Estilo", lbl_medium: "Material",
                 lbl_lighting: "Iluminação", lbl_palette: "Paleta", lbl_camera: "Câmera", lbl_magic: "✨ Melhoria Mágica",
                 lbl_ratio: "Proporção", lbl_version: "Versão", lbl_stylize: "Estilizar", lbl_weird: "Estranheza",
                 lbl_neg_desc: "*Excluir elementos.", btn_gen: "✨ Gerar", lbl_result: "Prompt Final:", btn_copy: "COPIAR"
             },
             "fr": {
-                nav_home: "Accueil", title: "Générateur Ultime", desc: "Constructeur avancé pour Midjourney v6 et SD.",
+                nav_home: "Accueil", title: "Générateur de Prompts d'Art IA", desc: "Constructeur avancé pour Midjourney v6 et SD.",
                 btn_random: "Surprenez-moi (Aléatoire)", lbl_subject: "Sujet", lbl_style: "Style", lbl_medium: "Matériel",
                 lbl_lighting: "Éclairage", lbl_palette: "Palette", lbl_camera: "Caméra", lbl_magic: "✨ Amélioration Magique",
                 lbl_ratio: "Ratio", lbl_version: "Version", lbl_stylize: "Styliser", lbl_weird: "Bizarrerie",
                 lbl_neg_desc: "*Exclure des éléments.", btn_gen: "✨ Générer", lbl_result: "Prompt Final:", btn_copy: "COPIER"
             },
             "de": {
-                nav_home: "Startseite", title: "Ultimativer Generator", desc: "Erweiterter Builder für Midjourney v6 und SD.",
+                nav_home: "Startseite", title: "AI Kunst Prompt Generator", desc: "Erweiterter Builder für Midjourney v6 und SD.",
                 btn_random: "Überraschen Sie mich", lbl_subject: "Betreff", lbl_style: "Stil", lbl_medium: "Material",
                 lbl_lighting: "Beleuchtung", lbl_palette: "Palette", lbl_camera: "Kamera", lbl_magic: "✨ Magische Verbesserung",
                 lbl_ratio: "Verhältnis", lbl_version: "Version", lbl_stylize: "Stilisieren", lbl_weird: "Seltsamkeit",
