@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M3U ToolBox - Web Player & Playlist Converter</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        /* ★★★ 這裡修正了：改回標準藍色 #0066cc ★★★ */
+        :root { --primary: #0066cc; --secondary: #27ae60; --bg: #f4f6f8; --white: #ffffff; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; color: #333; display: flex; flex-direction: column; min-height: 100vh;}
+        
+        /* 導覽列 */
+        nav { background: var(--white); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); white-space: nowrap; }
+        .logo { color: var(--primary); font-weight: bold; font-size: 1.2rem; text-decoration: none; }
+        .nav-links { display: flex !important; align-items: center !important; gap: 15px; flex-wrap: nowrap !important; }
+        .nav-links a { text-decoration: none; color: #555; font-weight: 500; font-size: 0.9rem; white-space: nowrap; }
+        select.lang-switch { padding: 5px; border-radius: 5px; border: 1px solid #ddd; cursor: pointer; } 
+
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; flex: 1; width: 100%; box-sizing: border-box; text-align: center; }
+        .card { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); min-height: 400px; }
+
+        /* 切換標籤 Tabs */
+        .tabs { display: flex; justify-content: center; margin-bottom: 30px; border-bottom: 2px solid #eee; }
+        .tab-btn { background: none; border: none; padding: 15px 30px; font-size: 1.1rem; font-weight: bold; color: #888; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.3s; }
+        .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .tab-btn:hover { color: var(--primary); opacity: 0.8; }
+
+        /* 功能區塊 */
+        .tool-section { display: none; animation: fadeIn 0.3s ease; }
+        .tool-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* 播放器樣式 */
+        input[type="text"] { width: 70%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem; margin-right: 10px; box-sizing: border-box;}
+        button.btn-action { background: var(--primary); color: white; border: none; padding: 12px 25px; font-size: 1rem; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        button.btn-action:hover { opacity: 0.9; }
+        #video-container { margin-top: 20px; width: 100%; background: #000; border-radius: 12px; overflow: hidden; display: none; }
+        video { width: 100%; height: auto; display: block; }
+
+        /* 轉換器樣式 */
+        textarea { width: 100%; height: 180px; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-family: monospace; box-sizing: border-box; resize: vertical; margin-bottom: 15px; }
+        .radio-group { margin: 15px 0; display: flex; gap: 20px; justify-content: center; background: #f9f9f9; padding: 10px; border-radius: 8px; }
+        
+        /* 轉換按鈕也統一用藍色 */
+        .btn-convert { background: var(--primary); color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; }
+        .btn-convert:hover { opacity: 0.9; }
+        
+        .btn-download { background: #27ae60; margin-top: 10px; display: none; }
+        #stats { margin-top: 10px; color: #666; font-size: 0.9rem; }
+
+        .ad-slot { background: #f0f0f0; height: 100px; margin: 20px 0; display: flex; align-items: center; justify-content: center; color: #999; }
+        
+        /* SEO 文章區塊 */
+        .seo-section { margin-top: 40px; background: white; padding: 30px; border-radius: 12px; text-align: left; line-height: 1.8; color: #444; }
+        .seo-section h2 { color: var(--primary); margin-top: 0; }
+        .seo-content { display: none; }
+
+        footer { text-align: center; padding: 20px; color: #888; margin-top: auto; }
+        @media (max-width: 600px) { nav { flex-direction: column; gap: 10px; } .nav-links { justify-content: center; } input[type="text"] { width: 100%; margin-bottom: 10px; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">MyToolBox</a>
+        <div class="nav-links">
+            <a href="index.html" data-i18n="nav_home">Home</a>
+            <select class="lang-switch" onchange="setLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="zh-TW">繁體中文</option>
+                <option value="zh-CN">简体中文</option>
+                <option value="es">Español</option>
+                <option value="pt">Português</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card">
+            <h1 data-i18n="title">M3U Tools Collection</h1>
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('player')" data-i18n="tab_player">📺 Web Player</button>
+                <button class="tab-btn" onclick="switchTab('converter')" data-i18n="tab_converter">🔄 Converter</button>
+            </div>
+
+            <div id="section-player" class="tool-section active">
+                <p data-i18n="desc_player">Enter your M3U8 stream URL to watch IPTV directly in the browser.</p>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+                    <input type="text" id="stream-url" placeholder="Paste .m3u8 link here...">
+                    <button class="btn-action" onclick="loadStream()" data-i18n="btn_play">Play</button>
+                </div>
+                <p style="margin-top:15px; font-size:0.9rem; color:#666; cursor:pointer; text-decoration:underline;" onclick="loadExample()" data-i18n="lbl_example">Try Example Stream</p>
+                <div id="video-container">
+                    <video id="video" controls></video>
+                </div>
+            </div>
+
+            <div id="section-converter" class="tool-section">
+                <p data-i18n="desc_converter">Convert M3U playlist to TXT or CSV (Excel) format.</p>
+                <textarea id="input-content" placeholder="Paste your #EXTINF content here..."></textarea>
+                <div class="radio-group">
+                    <label><input type="radio" name="format" value="txt" checked> TXT</label>
+                    <label><input type="radio" name="format" value="csv"> CSV</label>
+                </div>
+                <button class="btn-convert" onclick="convertM3U()" data-i18n="btn_convert">Convert Now</button>
+                <div id="stats"></div>
+                
+                <div id="result-area" style="display:none; margin-top:20px;">
+                    <p style="font-weight:bold;" data-i18n="lbl_result">Result:</p>
+                    <textarea id="output-content" readonly></textarea>
+                    <button id="download-btn" class="btn-convert btn-download" onclick="downloadFile()" data-i18n="btn_download">Download File</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="ad-slot">[AdSense Space]</div>
+
+        <div class="seo-section">
+            <div id="seo-en" class="seo-content">
+                <h2>All-in-One M3U Tool: Player & Converter</h2>
+                <p>Welcome to the ultimate M3U toolbox. Whether you want to <strong>watch IPTV streams</strong> directly in your browser or <strong>convert M3U playlists</strong> to TXT/CSV, we have you covered.</p>
+                <h3>Features</h3>
+                <ul>
+                    <li><strong>M3U Web Player:</strong> Supports HLS (.m3u8) streaming. No VLC needed.</li>
+                    <li><strong>Playlist Converter:</strong> Parse messy M3U files into clean Excel (CSV) or Text lists.</li>
+                    <li><strong>Privacy First:</strong> All processing happens in your browser. No files are uploaded.</li>
+                </ul>
+            </div>
+            
+            <div id="seo-zh-TW" class="seo-content">
+                <h2>M3U 工具箱：線上播放器與格式轉換器</h2>
+                <p>歡迎使用最強大的 M3U 工具箱。無論您是想直接在瀏覽器中<strong>觀看 IPTV 串流</strong>，還是想將 <strong>M3U 播放列表轉換</strong>為 TXT/CSV 格式，這裡都能滿足您的需求。</p>
+                <h3>功能特色</h3>
+                <ul>
+                    <li><strong>M3U 網頁播放器：</strong> 支援 HLS (.m3u8) 串流技術，無需安裝 VLC。</li>
+                    <li><strong>列表轉換器：</strong> 將雜亂的 M3U 檔案解析為整齊的 Excel (CSV) 或純文字列表。</li>
+                    <li><strong>隱私優先：</strong> 所有處理皆在您的瀏覽器中進行，檔案絕不上傳伺服器。</li>
+                </ul>
+            </div>
+            
+            <div id="seo-zh-CN" class="seo-content">
+                <h2>M3U 工具箱：在线播放器与格式转换器</h2>
+                <p>欢迎使用最强大的 M3U 工具箱。无论您是想直接在浏览器中<strong>观看 IPTV 流媒体</strong>，还是想将 <strong>M3U 播放列表转换</strong>为 TXT/CSV 格式，这里都能满足您的需求。</p>
+                <h3>功能特色</h3>
+                <ul>
+                    <li><strong>M3U 网页播放器：</strong> 支持 HLS (.m3u8) 流媒体技术，无需安装 VLC。</li>
+                    <li><strong>列表转换器：</strong> 将杂乱的 M3U 文件解析为整齐的 Excel (CSV) 或纯文本列表。</li>
+                    <li><strong>隐私优先：</strong> 所有处理皆在您的浏览器中进行，文件绝不上传服务器。</li>
+                </ul>
+            </div>
+            
+            <div id="seo-es" class="seo-content">
+                <h2>Herramientas M3U: Reproductor y Convertidor</h2>
+                <p>Bienvenido a la mejor caja de herramientas M3U. Ya sea que desee <strong>ver transmisiones IPTV</strong> o <strong>convertir listas M3U</strong> a TXT/CSV, lo tenemos cubierto.</p>
+                <h3>Características</h3>
+                <ul>
+                    <li><strong>Reproductor Web M3U:</strong> Soporta transmisión HLS (.m3u8). No se necesita VLC.</li>
+                    <li><strong>Convertidor de Listas:</strong> Analice archivos M3U desordenados en listas limpias de Excel (CSV).</li>
+                    <li><strong>Privacidad Primero:</strong> Todo el procesamiento ocurre en su navegador. No se suben archivos.</li>
+                </ul>
+            </div>
+            
+            <div id="seo-pt" class="seo-content">
+                <h2>Ferramentas M3U: Player e Conversor</h2>
+                <p>Bem-vindo à melhor caixa de ferramentas M3U. Se você deseja <strong>assistir a streams IPTV</strong> ou <strong>converter listas M3U</strong> para TXT/CSV, nós temos a solução.</p>
+                <h3>Recursos</h3>
+                <ul>
+                    <li><strong>Web Player M3U:</strong> Suporta streaming HLS (.m3u8). Não é necessário VLC.</li>
+                    <li><strong>Conversor de Listas:</strong> Analise arquivos M3U desorganizados em listas limpas de Excel (CSV).</li>
+                    <li><strong>Privacidade em Primeiro Lugar:</strong> Todo o processamento acontece no seu navegador. Nenhum arquivo é enviado.</li>
+                </ul>
+            </div>
+            
+            <div id="seo-fr" class="seo-content">
+                <h2>Outils M3U : Lecteur et Convertisseur</h2>
+                <p>Bienvenue dans la boîte à outils M3U ultime. Que vous souhaitiez <strong>regarder des flux IPTV</strong> ou <strong>convertir des playlists M3U</strong> en TXT/CSV, nous avons ce qu'il vous faut.</p>
+                <h3>Fonctionnalités</h3>
+                <ul>
+                    <li><strong>Lecteur Web M3U :</strong> Prend en charge le streaming HLS (.m3u8). Pas besoin de VLC.</li>
+                    <li><strong>Convertisseur de Playlist :</strong> Convertissez des fichiers M3U en listes Excel (CSV) ou Texte.</li>
+                    <li><strong>Confidentialité avant tout :</strong> Tout le traitement se fait dans votre navigateur. Aucun fichier n'est téléchargé.</li>
+                </ul>
+            </div>
+            
+            <div id="seo-de" class="seo-content">
+                <h2>M3U-Tools: Player und Konverter</h2>
+                <p>Willkommen bei der ultimativen M3U-Toolbox. Egal, ob Sie <strong>IPTV-Streams ansehen</strong> oder <strong>M3U-Playlists konvertieren</strong> möchten (TXT/CSV), wir haben die Lösung.</p>
+                <h3>Funktionen</h3>
+                <ul>
+                    <li><strong>M3U Web Player:</strong> Unterstützt HLS (.m3u8) Streaming. Kein VLC erforderlich.</li>
+                    <li><strong>Playlist-Konverter:</strong> Parsen Sie M3U-Dateien in saubere Excel- (CSV) oder Textlisten.</li>
+                    <li><strong>Datenschutz geht vor:</strong> Die gesamte Verarbeitung erfolgt in Ihrem Browser. Es werden keine Dateien hochgeladen.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; <span id="year"></span> MyToolBox. All Rights Reserved. 
+        | <a href="privacy.html" style="color:#999; text-decoration:none;">Privacy Policy</a>
+    </footer>
+
+    <script>
+        const translations = {
+            "en": {
+                nav_home: "Home", title: "M3U Tools Collection", tab_player: "📺 Web Player", tab_converter: "🔄 Converter",
+                desc_player: "Enter your M3U8 stream URL to watch IPTV directly in the browser.", btn_play: "Play", lbl_example: "Try Example Stream",
+                desc_converter: "Convert M3U playlist to TXT or CSV (Excel) format.", btn_convert: "Convert Now", lbl_result: "Result:", btn_download: "Download File"
+            },
+            "zh-TW": {
+                nav_home: "首頁", title: "M3U 工具箱", tab_player: "📺 線上播放器", tab_converter: "🔄 列表轉換器",
+                desc_player: "輸入 M3U8 串流網址，直接在瀏覽器觀看 IPTV。", btn_play: "播放", lbl_example: "試試範例串流",
+                desc_converter: "將 M3U 播放列表轉換為 TXT 或 CSV (Excel) 格式。", btn_convert: "開始轉換", lbl_result: "轉換結果：", btn_download: "下載檔案"
+            },
+            "zh-CN": {
+                nav_home: "首页", title: "M3U 工具箱", tab_player: "📺 在线播放器", tab_converter: "🔄 列表转换器",
+                desc_player: "输入 M3U8 流媒体网址，直接在浏览器观看 IPTV。", btn_play: "播放", lbl_example: "试试范例流媒体",
+                desc_converter: "将 M3U 播放列表转换为 TXT 或 CSV (Excel) 格式。", btn_convert: "开始转换", lbl_result: "转换结果：", btn_download: "下载文件"
+            },
+            "es": {
+                nav_home: "Inicio", title: "Herramientas M3U", tab_player: "📺 Reproductor", tab_converter: "🔄 Convertidor",
+                desc_player: "Introduce tu URL M3U8 para ver IPTV.", btn_play: "Ver", lbl_example: "Probar ejemplo",
+                desc_converter: "Convertir lista M3U a CSV/TXT.", btn_convert: "Convertir", lbl_result: "Resultado:", btn_download: "Descargar"
+            },
+            "pt": {
+                nav_home: "Início", title: "Ferramentas M3U", tab_player: "📺 Player", tab_converter: "🔄 Conversor",
+                desc_player: "Digite seu URL M3U8 para assistir IPTV.", btn_play: "Assistir", lbl_example: "Tentar exemplo",
+                desc_converter: "Converter lista M3U para CSV/TXT.", btn_convert: "Converter", lbl_result: "Resultado:", btn_download: "Baixar"
+            },
+            "fr": {
+                nav_home: "Accueil", title: "Outils M3U", tab_player: "📺 Lecteur", tab_converter: "🔄 Convertisseur",
+                desc_player: "Entrez votre URL M3U8 pour regarder l'IPTV.", btn_play: "Regarder", lbl_example: "Essayer l'exemple",
+                desc_converter: "Convertir playlist M3U en CSV/TXT.", btn_convert: "Convertir", lbl_result: "Résultat :", btn_download: "Télécharger"
+            },
+            "de": {
+                nav_home: "Startseite", title: "M3U Tools", tab_player: "📺 Player", tab_converter: "🔄 Konverter",
+                desc_player: "Geben Sie Ihre M3U8-URL ein.", btn_play: "Abspielen", lbl_example: "Beispiel testen",
+                desc_converter: "M3U-Liste in CSV/TXT konvertieren.", btn_convert: "Konvertieren", lbl_result: "Ergebnis:", btn_download: "Herunterladen"
+            }
+        };
+
+        function setLanguage(lang) {
+            if (!translations[lang]) lang = 'en';
+            try { localStorage.setItem('lang', lang); } catch (e) {}
+            
+            const select = document.querySelector('.lang-switch');
+            if(select) select.value = lang;
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(translations[lang][key]) el.innerText = translations[lang][key];
+            });
+            
+            document.querySelectorAll('.seo-content').forEach(el => { el.style.display = 'none'; });
+            const targetSeo = document.getElementById('seo-' + lang);
+            if (targetSeo) targetSeo.style.display = 'block';
+            else document.getElementById('seo-en').style.display = 'block';
+        }
+        
+        const savedLang = localStorage.getItem('lang') || 'en';
+        document.getElementById("year").innerText = new Date().getFullYear();
+        setLanguage(savedLang);
+
+        // Tab Switching
+        function switchTab(tab) {
+            document.querySelectorAll('.tool-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById('section-' + tab).classList.add('active');
+            document.querySelector(`button[onclick="switchTab('${tab}')"]`).classList.add('active');
+        }
+
+        // --- Player Logic ---
+        var video = document.getElementById('video');
+        var container = document.getElementById('video-container');
+
+        function loadStream() {
+            var url = document.getElementById('stream-url').value.trim();
+            if(url) {
+                container.style.display = 'block';
+                if(Hls.isSupported()) {
+                    var hls = new Hls();
+                    hls.loadSource(url);
+                    hls.attachMedia(video);
+                    hls.on(Hls.Events.MANIFEST_PARSED,function() { video.play(); });
+                } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = url;
+                    video.addEventListener('loadedmetadata',function() { video.play(); });
+                }
+            }
+        }
+        function loadExample() {
+            document.getElementById('stream-url').value = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
+            loadStream();
+        }
+
+        // --- Converter Logic ---
+        function convertM3U() {
+            const input = document.getElementById('input-content').value;
+            const format = document.querySelector('input[name="format"]:checked').value;
+            const outputArea = document.getElementById('output-content');
+            const resultArea = document.getElementById('result-area');
+            const dlBtn = document.getElementById('download-btn');
+            const stats = document.getElementById('stats');
+
+            if (!input.trim()) { alert("Please paste M3U content first!"); return; }
+
+            const lines = input.split('\n');
+            let result = format === 'csv' ? "Channel Name,URL\n" : "";
+            let count = 0;
+            let currentName = "";
+
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i].trim();
+                if (!line) continue;
+
+                if (line.startsWith("#EXTINF:")) {
+                    let comma = line.lastIndexOf(',');
+                    currentName = comma !== -1 ? line.substring(comma + 1).trim() : "Untitled";
+                } else if (line.startsWith("http") || line.endsWith(".m3u8") || line.endsWith(".ts") || line.startsWith("rtmp")) {
+                    if (currentName === "") currentName = "Channel_" + (count + 1);
+                    if (format === 'csv') {
+                        let safeName = currentName.replace(/"/g, '""');
+                        result += `${safeName},${line}\n`;
+                    } else {
+                        result += `${currentName}, ${line}\n`;
+                    }
+                    count++;
+                    currentName = "";
+                }
+            }
+            outputArea.value = result;
+            stats.innerHTML = `✅ Found ${count} Channels`;
+            resultArea.style.display = 'block';
+            dlBtn.style.display = 'inline-block';
+        }
+
+        function downloadFile() {
+            const content = document.getElementById('output-content').value;
+            const format = document.querySelector('input[name="format"]:checked').value;
+            const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `playlist.${format}`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
