@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Color Picker - Get HEX, RGB from Image</title>
+    <style>
+        :root { --primary: #0066cc; --bg: #f4f6f8; --white: #ffffff; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; color: #333; display: flex; flex-direction: column; min-height: 100vh;}
+        
+        /* 導覽列 */
+        nav { background: var(--white); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); white-space: nowrap; }
+        .logo { color: var(--primary); font-weight: bold; font-size: 1.2rem; text-decoration: none; }
+        .nav-links { display: flex !important; align-items: center !important; gap: 15px; flex-wrap: nowrap !important; }
+        .nav-links a { text-decoration: none; color: #555; font-weight: 500; font-size: 0.9rem; white-space: nowrap; }
+        select.lang-switch { padding: 5px; border-radius: 5px; border: 1px solid #ddd; cursor: pointer; } 
+
+        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; flex: 1; width: 100%; box-sizing: border-box; }
+        .card { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; }
+
+        /* 上傳區塊 */
+        .upload-area { border: 2px dashed #ddd; padding: 30px; border-radius: 10px; cursor: pointer; transition: 0.3s; background: #fafafa; margin-bottom: 20px; }
+        .upload-area:hover { border-color: var(--primary); background: #eef6ff; }
+        .upload-icon { font-size: 40px; color: #aaa; margin-bottom: 10px; }
+        
+        #image-canvas { max-width: 100%; cursor: crosshair; border: 1px solid #ddd; display: none; margin-top: 10px; }
+        
+        /* 結果區塊 */
+        .result-box { display: none; margin-top: 20px; padding: 20px; background: #f9f9f9; border-radius: 8px; border: 1px solid #eee; text-align: left; align-items: center; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .color-preview { width: 60px; height: 60px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .color-codes { flex: 1; }
+        .code-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; background: white; padding: 8px 12px; border-radius: 5px; border: 1px solid #ddd; }
+        .code-val { font-family: monospace; font-size: 1.1rem; font-weight: bold; color: #333; }
+        .copy-btn { background: none; border: none; color: var(--primary); cursor: pointer; font-size: 0.9rem; font-weight: bold; }
+
+        .ad-slot { background: #f0f0f0; height: 100px; margin: 20px 0; display: flex; align-items: center; justify-content: center; color: #999; }
+        
+        /* SEO 文章區塊 */
+        .seo-section { margin-top: 40px; background: white; padding: 30px; border-radius: 12px; text-align: left; line-height: 1.8; color: #444; }
+        .seo-section h2 { color: var(--primary); margin-top: 0; }
+        .seo-content { display: none; }
+
+        footer { text-align: center; padding: 20px; color: #888; margin-top: auto; }
+        @media (max-width: 600px) { nav { flex-direction: column; gap: 10px; } .nav-links { justify-content: center; } .result-box { flex-direction: column; text-align: center; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">MyToolBox</a>
+        <div class="nav-links">
+            <a href="index.html" data-i18n="nav_home">Home</a>
+            <select class="lang-switch" onchange="setLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="zh-TW">繁體中文</option>
+                <option value="zh-CN">简体中文</option>
+                <option value="es">Español</option>
+                <option value="pt">Português</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card">
+            <h1 data-i18n="title">Image Color Picker</h1>
+            <p data-i18n="desc">Upload an image and click anywhere to get the color code.</p>
+            
+            <div class="upload-area" onclick="document.getElementById('file-input').click()">
+                <div class="upload-icon">🎨</div>
+                <span data-i18n="upload_text">Click to Upload Image</span>
+                <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="loadImage(event)">
+            </div>
+
+            <canvas id="image-canvas"></canvas>
+
+            <div class="result-box" id="result-box">
+                <div class="color-preview" id="color-preview"></div>
+                <div class="color-codes">
+                    <div class="code-row">
+                        <span>HEX:</span>
+                        <span class="code-val" id="hex-val">#FFFFFF</span>
+                        <button class="copy-btn" onclick="copyToClip('hex-val')">COPY</button>
+                    </div>
+                    <div class="code-row">
+                        <span>RGB:</span>
+                        <span class="code-val" id="rgb-val">rgb(255, 255, 255)</span>
+                        <button class="copy-btn" onclick="copyToClip('rgb-val')">COPY</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ad-slot">[AdSense Space]</div>
+
+        <div class="seo-section">
+            
+            <div id="seo-en" class="seo-content">
+                <h2>Online Image Color Picker</h2>
+                <p>Have you ever seen a beautiful color in an image and wondered, "What color is that?" Our <strong>Image Color Picker</strong> is the perfect tool for designers and developers. Simply upload any photo, and pick colors directly from it.</p>
+                <h3>Features</h3>
+                <ul>
+                    <li><strong>Instant HEX & RGB:</strong> Get the exact color codes immediately.</li>
+                    <li><strong>No Software Needed:</strong> Works right in your browser. No Photoshop required.</li>
+                    <li><strong>Privacy First:</strong> Your images are processed locally in your browser and are never uploaded to our server.</li>
+                </ul>
+            </div>
+
+            <div id="seo-zh-TW" class="seo-content">
+                <h2>線上圖片吸色工具 (Color Picker)</h2>
+                <p>曾經在圖片上看到一個漂亮的顏色，卻不知道它的色碼是什麼嗎？我們的<strong>線上圖片吸色計</strong>是設計師和開發者的最佳幫手。只需上傳照片，點擊圖片任一處，即可獲取顏色。</p>
+                <h3>功能特色</h3>
+                <ul>
+                    <li><strong>即時獲取 HEX 與 RGB：</strong> 點擊立刻顯示色碼，方便複製。</li>
+                    <li><strong>無需安裝軟體：</strong> 直接在瀏覽器運作，不需要 Photoshop。</li>
+                    <li><strong>隱私安全：</strong> 您的圖片僅在瀏覽器內處理，不會上傳到任何伺服器。</li>
+                </ul>
+            </div>
+
+            <div id="seo-zh-CN" class="seo-content">
+                <h2>在线图片吸色工具 (Color Picker)</h2>
+                <p>曾经在图片上看到一个漂亮的颜色，却不知道它的色码是什么吗？我们的<strong>在线图片吸色计</strong>是设计师和开发者的最佳帮手。只需上传照片，点击图片任一处，即可获取颜色。</p>
+                <h3>功能特色</h3>
+                <ul>
+                    <li><strong>即时获取 HEX 与 RGB：</strong> 点击立刻显示色码，方便复制。</li>
+                    <li><strong>无需安装软件：</strong> 直接在浏览器运作，不需要 Photoshop。</li>
+                    <li><strong>隐私安全：</strong> 您的图片仅在浏览器内处理，不会上传到任何服务器。</li>
+                </ul>
+            </div>
+
+            <div id="seo-es" class="seo-content">
+                <h2>Selector de Color de Imagen</h2>
+                <p>¿Alguna vez has visto un color hermoso en una imagen y te has preguntado qué código es? Nuestra herramienta es perfecta para diseñadores.</p>
+                <h3>Características</h3>
+                <ul>
+                    <li><strong>HEX y RGB instantáneos:</strong> Obtenga los códigos de color exactos.</li>
+                    <li><strong>Sin software:</strong> Funciona en su navegador. No se requiere Photoshop.</li>
+                </ul>
+            </div>
+
+            <div id="seo-pt" class="seo-content">
+                <h2>Seletor de Cores de Imagem</h2>
+                <p>Já viu uma cor bonita em uma imagem e se perguntou qual código é? Nossa ferramenta é perfeita para designers.</p>
+                <h3>Características</h3>
+                <ul>
+                    <li><strong>HEX e RGB instantâneos:</strong> Obtenha os códigos de cores exatos.</li>
+                    <li><strong>Sem software:</strong> Funciona no seu navegador. Não é necessário Photoshop.</li>
+                </ul>
+            </div>
+
+            <div id="seo-fr" class="seo-content">
+                <h2>Sélecteur de Couleur d'Image</h2>
+                <p>Vous avez vu une belle couleur et vous voulez son code ? Notre outil est parfait pour les designers.</p>
+                <h3>Caractéristiques</h3>
+                <ul>
+                    <li><strong>HEX et RGB instantanés :</strong> Obtenez les codes couleur exacts.</li>
+                    <li><strong>Pas de logiciel :</strong> Fonctionne dans votre navigateur.</li>
+                </ul>
+            </div>
+
+            <div id="seo-de" class="seo-content">
+                <h2>Farbpicker aus Bild</h2>
+                <p>Haben Sie eine schöne Farbe in einem Bild gesehen und sich gefragt, welcher Code das ist? Unser Tool ist perfekt für Designer.</p>
+                <h3>Funktionen</h3>
+                <ul>
+                    <li><strong>Sofort HEX & RGB:</strong> Erhalten Sie die exakten Farbcodes.</li>
+                    <li><strong>Keine Software:</strong> Funktioniert in Ihrem Browser.</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        &copy; <span id="year"></span> MyToolBox. All Rights Reserved. 
+        | <a href="privacy.html" style="color:#999; text-decoration:none;">Privacy Policy</a>
+    </footer>
+
+    <script>
+        const translations = {
+            "en": { nav_home: "Home", title: "Image Color Picker", desc: "Upload an image and click anywhere to get the color code.", upload_text: "Click to Upload Image" },
+            "zh-TW": { nav_home: "首頁", title: "圖片吸色工具", desc: "上傳圖片並點擊任一處以獲取顏色代碼。", upload_text: "點擊上傳圖片" },
+            "zh-CN": { nav_home: "首页", title: "图片吸色工具", desc: "上传图片并点击任一处以获取颜色代码。", upload_text: "点击上传图片" },
+            "es": { nav_home: "Inicio", title: "Selector de Color", desc: "Sube una imagen y haz clic para obtener el color.", upload_text: "Subir imagen" },
+            "pt": { nav_home: "Início", title: "Seletor de Cores", desc: "Carregue uma imagem e clique para obter a cor.", upload_text: "Carregar imagem" },
+            "fr": { nav_home: "Accueil", title: "Sélecteur de Couleur", desc: "Téléchargez une image et cliquez pour obtenir la couleur.", upload_text: "Télécharger l'image" },
+            "de": { nav_home: "Startseite", title: "Farbpicker", desc: "Laden Sie ein Bild hoch und klicken Sie, um die Farbe zu erhalten.", upload_text: "Bild hochladen" }
+        };
+
+        function setLanguage(lang) {
+            if (!translations[lang]) lang = 'en';
+            try { localStorage.setItem('lang', lang); } catch (e) {}
+            
+            const select = document.querySelector('.lang-switch');
+            if(select) select.value = lang;
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(translations[lang][key]) el.innerText = translations[lang][key];
+            });
+            
+            document.querySelectorAll('.seo-content').forEach(el => { el.style.display = 'none'; });
+            const targetSeo = document.getElementById('seo-' + lang);
+            if (targetSeo) targetSeo.style.display = 'block';
+            else document.getElementById('seo-en').style.display = 'block';
+        }
+        
+        const savedLang = localStorage.getItem('lang') || 'en';
+        document.getElementById("year").innerText = new Date().getFullYear();
+        setLanguage(savedLang);
+
+        const canvas = document.getElementById('image-canvas');
+        const ctx = canvas.getContext('2d');
+        const resultBox = document.getElementById('result-box');
+        const colorPreview = document.getElementById('color-preview');
+        const hexVal = document.getElementById('hex-val');
+        const rgbVal = document.getElementById('rgb-val');
+
+        function loadImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const maxWidth = 800;
+                    let w = img.width;
+                    let h = img.height;
+                    if (w > maxWidth) {
+                        h = (h * maxWidth) / w;
+                        w = maxWidth;
+                    }
+                    canvas.width = w;
+                    canvas.height = h;
+                    ctx.drawImage(img, 0, 0, w, h);
+                    canvas.style.display = 'block';
+                    resultBox.style.display = 'none';
+                }
+                img.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        canvas.addEventListener('click', function(event) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const x = (event.clientX - rect.left) * scaleX;
+            const y = (event.clientY - rect.top) * scaleY;
+            const pixel = ctx.getImageData(x, y, 1, 1).data;
+            const r = pixel[0];
+            const g = pixel[1];
+            const b = pixel[2];
+            const rgbStr = `rgb(${r}, ${g}, ${b})`;
+            const hexStr = rgbToHex(r, g, b);
+            resultBox.style.display = 'flex';
+            colorPreview.style.backgroundColor = rgbStr;
+            hexVal.innerText = hexStr;
+            rgbVal.innerText = rgbStr;
+        });
+
+        function rgbToHex(r, g, b) {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+        }
+
+        function copyToClip(id) {
+            const text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Copied: " + text);
+            });
+        }
+    </script>
+</body>
+</html>

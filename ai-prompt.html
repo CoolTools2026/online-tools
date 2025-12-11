@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Art Prompt Generator - Midjourney & Stable Diffusion</title>
+    <style>
+        :root { --primary: #0066cc; --bg: #f4f6f8; --white: #ffffff; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; color: #333; display: flex; flex-direction: column; min-height: 100vh;}
+        
+        /* 導覽列 */
+        nav { background: var(--white); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); white-space: nowrap; }
+        .logo { color: var(--primary); font-weight: bold; font-size: 1.2rem; text-decoration: none; }
+        .nav-links { display: flex !important; align-items: center !important; gap: 15px; flex-wrap: nowrap !important; }
+        .nav-links a { text-decoration: none; color: #555; font-weight: 500; font-size: 0.9rem; white-space: nowrap; }
+        select.lang-switch { padding: 5px; border-radius: 5px; border: 1px solid #ddd; cursor: pointer; } 
+
+        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; flex: 1; width: 100%; box-sizing: border-box; }
+        .card { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
+        /* 表單區塊 */
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; color: #555; }
+        select, input[type="text"] { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem; box-sizing: border-box; }
+        select:focus, input:focus { border-color: var(--primary); outline: none; }
+        
+        .row { display: flex; gap: 20px; }
+        .col { flex: 1; }
+        
+        /* 按鈕區 */
+        .btn-generate { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; margin-top: 10px; }
+        .btn-generate:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* 結果區 */
+        .result-area { margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; }
+        textarea { width: 100%; height: 120px; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 1.1rem; line-height: 1.6; resize: vertical; box-sizing: border-box; background: #f9f9f9; color: #333; font-family: monospace; }
+        
+        .copy-btn { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; float: right; margin-top: 10px; font-weight: bold; }
+        .copy-btn:hover { background: #218838; }
+
+        .ad-slot { background: #f0f0f0; height: 100px; margin: 20px 0; display: flex; align-items: center; justify-content: center; color: #999; }
+        
+        /* SEO 文章區塊 */
+        .seo-section { margin-top: 40px; background: white; padding: 30px; border-radius: 12px; text-align: left; line-height: 1.8; color: #444; }
+        .seo-section h2 { color: var(--primary); margin-top: 0; }
+        .seo-content { display: none; }
+
+        footer { text-align: center; padding: 20px; color: #888; margin-top: auto; }
+        @media (max-width: 600px) { .row { flex-direction: column; gap: 15px; } nav { flex-direction: column; gap: 10px; } .nav-links { justify-content: center; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">MyToolBox</a>
+        <div class="nav-links">
+            <a href="index.html" data-i18n="nav_home">Home</a>
+            <select class="lang-switch" onchange="setLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="zh-TW">繁體中文</option>
+                <option value="zh-CN">简体中文</option>
+                <option value="es">Español</option>
+                <option value="pt">Português</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card">
+            <h1 data-i18n="title">AI Prompt Generator</h1>
+            <p data-i18n="desc">Create perfect prompts for Midjourney, Stable Diffusion, and DALL-E.</p>
+            
+            <div class="form-group">
+                <label data-i18n="lbl_subject">Subject (What do you want to see?)</label>
+                <input type="text" id="subject" placeholder="e.g., A futuristic cyberpunk city street...">
+            </div>
+
+            <div class="row">
+                <div class="col form-group">
+                    <label data-i18n="lbl_style">Art Style</label>
+                    <select id="style">
+                        <option value="">None</option>
+                        <option value="Cyberpunk">Cyberpunk</option>
+                        <option value="Anime Style">Anime Style</option>
+                        <option value="Realistic">Realistic / Photo-realism</option>
+                        <option value="Oil Painting">Oil Painting</option>
+                        <option value="Watercolor">Watercolor</option>
+                        <option value="3D Render">3D Render (Unreal Engine 5)</option>
+                        <option value="Pixel Art">Pixel Art</option>
+                        <option value="Cinematic">Cinematic</option>
+                    </select>
+                </div>
+                <div class="col form-group">
+                    <label data-i18n="lbl_lighting">Lighting</label>
+                    <select id="lighting">
+                        <option value="">None</option>
+                        <option value="Cinematic Lighting">Cinematic Lighting</option>
+                        <option value="Natural Light">Natural Light</option>
+                        <option value="Neon Lights">Neon Lights</option>
+                        <option value="Golden Hour">Golden Hour</option>
+                        <option value="Studio Lighting">Studio Lighting</option>
+                        <option value="Volumetric Lighting">Volumetric Lighting</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col form-group">
+                    <label data-i18n="lbl_camera">Camera / View</label>
+                    <select id="camera">
+                        <option value="">None</option>
+                        <option value="Wide Angle">Wide Angle</option>
+                        <option value="Macro Lens">Macro Lens</option>
+                        <option value="Drone View">Drone View</option>
+                        <option value="Bokeh">Bokeh (Blurred Background)</option>
+                        <option value="4K">4K Resolution</option>
+                        <option value="8K">8K Resolution</option>
+                    </select>
+                </div>
+                <div class="col form-group">
+                    <label data-i18n="lbl_ratio">Aspect Ratio (Midjourney)</label>
+                    <select id="ratio">
+                        <option value="">Default (1:1)</option>
+                        <option value="--ar 16:9">Landscape (16:9)</option>
+                        <option value="--ar 9:16">Portrait (9:16)</option>
+                        <option value="--ar 3:2">Photo (3:2)</option>
+                        <option value="--ar 2:3">Portrait (2:3)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn-generate" onclick="generatePrompt()" data-i18n="btn_gen">✨ Generate Prompt</button>
+
+            <div class="result-area">
+                <label data-i18n="lbl_result">Your Prompt:</label>
+                <textarea id="result-output" readonly></textarea>
+                <button class="copy-btn" onclick="copyText()" data-i18n="btn_copy">Copy to Clipboard</button>
+            </div>
+        </div>
+
+        <div class="ad-slot">[AdSense Space]</div>
+
+        <div class="seo-section">
+            
+            <div id="seo-en" class="seo-content">
+                <h2>Free AI Art Prompt Generator</h2>
+                <p>Unlock the full potential of AI art generators like <strong>Midjourney</strong>, <strong>Stable Diffusion</strong>, and <strong>DALL-E 3</strong>. Writing the perfect prompt can be tricky, but our tool makes it easy.</p>
+                <h3>How to write good prompts?</h3>
+                <p>A good AI prompt usually consists of: <strong>Subject + Art Style + Lighting + Camera Settings + Parameters</strong>. Our generator combines these elements automatically for you.</p>
+            </div>
+
+            <div id="seo-zh-TW" class="seo-content">
+                <h2>免費 AI 繪圖提示詞生成器 (咒語產生器)</h2>
+                <p>釋放 AI 繪圖工具的潛力！無論您使用的是 <strong>Midjourney</strong>、<strong>Stable Diffusion</strong> 還是 <strong>DALL-E 3</strong>，寫出精準的提示詞（咒語）是生成高品質圖片的關鍵。我們的工具能幫您快速組合出專業的描述詞。</p>
+                <h3>如何寫出好的 AI 咒語？</h3>
+                <p>一個完美的 AI 提示詞通常包含：<strong>主體描述 + 藝術風格 + 光線氛圍 + 鏡頭視角 + 參數設定</strong>。我們的生成器會自動幫您將這些元素組合成一段流暢的英文咒語。</p>
+            </div>
+
+            <div id="seo-zh-CN" class="seo-content">
+                <h2>免费 AI 绘图提示词生成器 (咒语产生器)</h2>
+                <p>释放 AI 绘图工具的潜力！无论您使用的是 <strong>Midjourney</strong>、<strong>Stable Diffusion</strong> 还是 <strong>DALL-E 3</strong>，写出精准的提示词（咒语）是生成高质量图片的关键。我们的工具能帮您快速组合出专业的描述词。</p>
+                <h3>如何写出好的 AI 咒语？</h3>
+                <p>一个完美的 AI 提示词通常包含：<strong>主体描述 + 艺术风格 + 光线氛围 + 镜头视角 + 参数设定</strong>。我们的生成器会自动帮您将这些元素组合成一段流畅的英文咒语。</p>
+            </div>
+
+            <div id="seo-es" class="seo-content">
+                <h2>Generador de Prompts para IA</h2>
+                <p>Crea los prompts perfectos para Midjourney y Stable Diffusion. Nuestra herramienta combina estilo, iluminación y cámara automáticamente.</p>
+            </div>
+
+            <div id="seo-pt" class="seo-content">
+                <h2>Gerador de Prompts para IA</h2>
+                <p>Crie prompts perfeitos para Midjourney e Stable Diffusion. Nossa ferramenta combina estilo, iluminação e câmera automaticamente.</p>
+            </div>
+
+            <div id="seo-fr" class="seo-content">
+                <h2>Générateur de Prompts IA</h2>
+                <p>Créez des prompts parfaits pour Midjourney et Stable Diffusion. Notre outil combine automatiquement le style, l'éclairage et la caméra.</p>
+            </div>
+
+            <div id="seo-de" class="seo-content">
+                <h2>AI Prompt Generator</h2>
+                <p>Erstellen Sie perfekte Prompts für Midjourney und Stable Diffusion. Unser Tool kombiniert automatisch Stil, Beleuchtung und Kamera.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        &copy; <span id="year"></span> MyToolBox. All Rights Reserved. 
+        | <a href="privacy.html" style="color:#999; text-decoration:none;">Privacy Policy</a>
+    </footer>
+
+    <script>
+        const translations = {
+            "en": {
+                nav_home: "Home", title: "AI Prompt Generator", desc: "Create perfect prompts for Midjourney, Stable Diffusion, and DALL-E.",
+                lbl_subject: "Subject", lbl_style: "Art Style", lbl_lighting: "Lighting", lbl_camera: "Camera / View", lbl_ratio: "Aspect Ratio",
+                btn_gen: "✨ Generate Prompt", lbl_result: "Your Prompt:", btn_copy: "Copy to Clipboard"
+            },
+            "zh-TW": {
+                nav_home: "首頁", title: "AI 提示詞生成器", desc: "為 Midjourney 和 Stable Diffusion 產生完美的咒語。",
+                lbl_subject: "主體描述 (想要畫什麼?)", lbl_style: "藝術風格", lbl_lighting: "光線氛圍", lbl_camera: "鏡頭 / 畫質", lbl_ratio: "圖片比例 (MJ)",
+                btn_gen: "✨ 生成咒語", lbl_result: "您的咒語：", btn_copy: "複製到剪貼簿"
+            },
+            "zh-CN": {
+                nav_home: "首页", title: "AI 提示词生成器", desc: "为 Midjourney 和 Stable Diffusion 产生完美的咒语。",
+                lbl_subject: "主体描述 (想要画什么?)", lbl_style: "艺术风格", lbl_lighting: "光线氛围", lbl_camera: "镜头 / 画质", lbl_ratio: "图片比例 (MJ)",
+                btn_gen: "✨ 生成咒语", lbl_result: "您的咒语：", btn_copy: "复制到剪贴板"
+            },
+            "es": {
+                nav_home: "Inicio", title: "Generador de Prompts IA", desc: "Crea prompts perfectos para Midjourney y Stable Diffusion.",
+                lbl_subject: "Sujeto", lbl_style: "Estilo", lbl_lighting: "Iluminación", lbl_camera: "Cámara", lbl_ratio: "Relación de aspecto",
+                btn_gen: "✨ Generar", lbl_result: "Tu Prompt:", btn_copy: "Copiar"
+            },
+            "pt": {
+                nav_home: "Início", title: "Gerador de Prompts IA", desc: "Crie prompts perfeitos para Midjourney e Stable Diffusion.",
+                lbl_subject: "Assunto", lbl_style: "Estilo", lbl_lighting: "Iluminação", lbl_camera: "Câmera", lbl_ratio: "Proporção",
+                btn_gen: "✨ Gerar", lbl_result: "Seu Prompt:", btn_copy: "Copiar"
+            },
+            "fr": {
+                nav_home: "Accueil", title: "Générateur de Prompts IA", desc: "Créez des prompts parfaits pour Midjourney et Stable Diffusion.",
+                lbl_subject: "Sujet", lbl_style: "Style", lbl_lighting: "Éclairage", lbl_camera: "Caméra", lbl_ratio: "Ratio d'aspect",
+                btn_gen: "✨ Générer", lbl_result: "Votre Prompt :", btn_copy: "Copier"
+            },
+            "de": {
+                nav_home: "Startseite", title: "AI Prompt Generator", desc: "Erstellen Sie perfekte Prompts für Midjourney und Stable Diffusion.",
+                lbl_subject: "Betreff", lbl_style: "Stil", lbl_lighting: "Beleuchtung", lbl_camera: "Kamera", lbl_ratio: "Seitenverhältnis",
+                btn_gen: "✨ Generieren", lbl_result: "Ihr Prompt:", btn_copy: "Kopieren"
+            }
+        };
+
+        function setLanguage(lang) {
+            if (!translations[lang]) lang = 'en';
+            try { localStorage.setItem('lang', lang); } catch (e) {}
+            
+            const select = document.querySelector('.lang-switch');
+            if(select) select.value = lang;
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(translations[lang][key]) el.innerText = translations[lang][key];
+            });
+            
+            document.querySelectorAll('.seo-content').forEach(el => { el.style.display = 'none'; });
+            const targetSeo = document.getElementById('seo-' + lang);
+            if (targetSeo) targetSeo.style.display = 'block';
+            else document.getElementById('seo-en').style.display = 'block';
+        }
+        
+        const savedLang = localStorage.getItem('lang') || 'en';
+        document.getElementById("year").innerText = new Date().getFullYear();
+        setLanguage(savedLang);
+
+        function generatePrompt() {
+            const subject = document.getElementById('subject').value.trim();
+            const style = document.getElementById('style').value;
+            const lighting = document.getElementById('lighting').value;
+            const camera = document.getElementById('camera').value;
+            const ratio = document.getElementById('ratio').value;
+            
+            let parts = [];
+            if (subject) parts.push(subject);
+            if (style) parts.push(style);
+            if (lighting) parts.push(lighting);
+            if (camera) parts.push(camera);
+            if (ratio) parts.push(ratio);
+            
+            const result = parts.join(', ');
+            document.getElementById('result-output').value = result;
+        }
+
+        function copyText() {
+            const copyText = document.getElementById("result-output");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value).then(() => {
+                alert("Copied!");
+            });
+        }
+    </script>
+</body>
+</html>
