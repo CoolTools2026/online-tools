@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Case Converter - Uppercase, Lowercase & Title Case</title>
+    
+    <title>Case Converter - Uppercase, Lowercase & Title Case Tool</title>
+    
+    <meta name="description" content="Free online text case converter. Easily convert text to Uppercase, lowercase, Title Case, Sentence case, and more. Simple and fast.">
+    
+    <meta property="og:title" content="Text Case Converter (Upper/Lower/Title Case)">
+    <meta property="og:description" content="Convert text case instantly. Supports Uppercase, lowercase, Title Case & more.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mywebtoolboxhq.com/case-converter.html">
+
     <style>
         :root { --primary: #0066cc; --bg: #f4f6f8; --white: #ffffff; }
         body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; color: #333; display: flex; flex-direction: column; min-height: 100vh;}
@@ -184,36 +193,44 @@
     <script>
         const translations = {
             "en": {
+                // 4. 新增分頁標題設定
+                page_title: "Case Converter - Uppercase, Lowercase & Title Case Tool",
                 nav_home: "Home",
                 title: "Case Converter", desc: "Easily convert text between uppercase, lowercase, and title case.",
                 btn_copy: "Copy Result", btn_clear: "Clear"
             },
             "zh-TW": {
+                page_title: "英文大小寫轉換器 - 全大寫、全小寫、標題格式",
                 nav_home: "首頁",
                 title: "大小寫轉換器", desc: "輕鬆轉換全大寫、全小寫或標題格式。",
                 btn_copy: "複製結果", btn_clear: "清空"
             },
             "zh-CN": {
+                page_title: "英文大小写转换器 - 全大写、全小写、标题格式",
                 nav_home: "首页",
                 title: "大小写转换器", desc: "轻松转换全大写、全小写或标题格式。",
                 btn_copy: "复制结果", btn_clear: "清空"
             },
             "es": {
+                page_title: "Convertidor de Mayúsculas y Minúsculas - Online Gratis",
                 nav_home: "Inicio",
                 title: "Convertidor de Caso", desc: "Convierta fácilmente texto entre mayúsculas y minúsculas.",
                 btn_copy: "Copiar", btn_clear: "Borrar"
             },
             "pt": {
+                page_title: "Conversor de Maiúsculas e Minúsculas - Online Grátis",
                 nav_home: "Início",
                 title: "Conversor de Caso", desc: "Converta facilmente texto entre maiúsculas e minúsculas.",
                 btn_copy: "Copiar", btn_clear: "Limpar"
             },
             "fr": {
+                page_title: "Convertisseur de Casse - Majuscules et Minuscules",
                 nav_home: "Accueil",
                 title: "Convertisseur de Casse", desc: "Convertissez facilement le texte entre majuscules et minuscules.",
                 btn_copy: "Copier", btn_clear: "Effacer"
             },
             "de": {
+                page_title: "Groß- und Kleinschreibung Konverter - Kostenlos Online",
                 nav_home: "Startseite",
                 title: "Schreibweise Konverter", desc: "Text einfach zwischen Groß- und Kleinschreibung umwandeln.",
                 btn_copy: "Kopieren", btn_clear: "Löschen"
@@ -227,6 +244,11 @@
             const select = document.querySelector('.lang-switch');
             if(select) select.value = lang;
             
+            // ★★★ 4. 更新分頁標題 ★★★
+            if (translations[lang]['page_title']) {
+                document.title = translations[lang]['page_title'];
+            }
+
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if(translations[lang][key]) el.innerText = translations[lang][key];

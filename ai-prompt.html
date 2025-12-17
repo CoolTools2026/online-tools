@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Art Prompt Generator - Midjourney, Stable Diffusion, DALL-E 3</title>
+    
+    <title>Free AI Art Prompt Generator - Midjourney v6, Stable Diffusion & DALL-E 3</title>
+    
+    <meta name="description" content="Create perfect AI art prompts with style & parameter controls. Randomize ideas for Midjourney v6, Niji, and Stable Diffusion. No login required.">
+    
+    <meta property="og:title" content="AI Art Prompt Generator (Midjourney v6)">
+    <meta property="og:description" content="Stop guessing parameters! Generate pro AI art prompts in seconds with style controls.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mywebtoolboxhq.com/ai-prompt.html">
+
     <style>
         /* ★★★ 修正：主色改回標準藍 #0066cc (維持網站統一) ★★★ */
         :root { --primary: #0066cc; --secondary: #00cec9; --bg: #f4f6f8; --white: #ffffff; --text: #2d3436; }
@@ -358,6 +367,8 @@
     <script>
         const translations = {
             "en": {
+                // 4. 新增分頁標題設定
+                page_title: "Free AI Art Prompt Generator - Midjourney v6, Stable Diffusion & DALL-E 3",
                 nav_home: "Home", title: "AI Art Prompt Generator", desc: "The most advanced prompt builder for Midjourney v6, Niji, and Stable Diffusion.",
                 btn_random: "Surprise Me (Random)", lbl_subject: "Subject (What do you want to see?)", lbl_style: "Art Style", lbl_medium: "Material / Medium",
                 lbl_lighting: "Lighting", lbl_palette: "Color Palette", lbl_camera: "Camera Angle", lbl_magic: "✨ Magic Enhance (Quality Boost)",
@@ -365,6 +376,7 @@
                 lbl_neg_desc: "*Exclude items from the image.", btn_gen: "✨ Generate Prompt", lbl_result: "Final Prompt to Copy:", btn_copy: "COPY"
             },
             "zh-TW": {
+                page_title: "免費 AI 繪圖提示詞生成器 - Midjourney v6 & Stable Diffusion 咒語產生",
                 nav_home: "首頁", title: "AI 繪圖提示詞生成器", desc: "支援 Midjourney v6、Niji 和 Stable Diffusion 的最強咒語產生器。",
                 btn_random: "隨機搭配 (給我靈感)", lbl_subject: "主體描述 (想要畫什麼?)", lbl_style: "藝術風格", lbl_medium: "特殊材質",
                 lbl_lighting: "光線氛圍", lbl_palette: "色調風格", lbl_camera: "鏡頭視角", lbl_magic: "✨ 魔法畫質增強 (自動優化)",
@@ -372,6 +384,7 @@
                 lbl_neg_desc: "*排除不需要的元素 (負面提示詞)。", btn_gen: "✨ 生成咒語", lbl_result: "複製您的咒語：", btn_copy: "複製"
             },
             "zh-CN": {
+                page_title: "免费 AI 绘图提示词生成器 - Midjourney v6 & Stable Diffusion 咒语产生",
                 nav_home: "首页", title: "AI 绘图提示词生成器", desc: "支持 Midjourney v6、Niji 和 Stable Diffusion 的最强咒语产生器。",
                 btn_random: "随机搭配 (给我灵感)", lbl_subject: "主体描述 (想要画什么?)", lbl_style: "艺术风格", lbl_medium: "特殊材质",
                 lbl_lighting: "光线氛围", lbl_palette: "色调风格", lbl_camera: "镜头视角", lbl_magic: "✨ 魔法画质增强 (自动优化)",
@@ -379,6 +392,7 @@
                 lbl_neg_desc: "*排除不需要的元素 (负面提示词)。", btn_gen: "✨ 生成咒语", lbl_result: "复制您的咒语：", btn_copy: "复制"
             },
             "es": {
+                page_title: "Generador de Prompts de Arte IA Gratis - Midjourney & Stable Diffusion",
                 nav_home: "Inicio", title: "Generador de Prompts de Arte IA", desc: "Constructor avanzado para Midjourney v6 y SD.",
                 btn_random: "Sorpréndeme (Aleatorio)", lbl_subject: "Sujeto", lbl_style: "Estilo", lbl_medium: "Material",
                 lbl_lighting: "Iluminación", lbl_palette: "Paleta", lbl_camera: "Cámara", lbl_magic: "✨ Mejora Mágica",
@@ -386,6 +400,7 @@
                 lbl_neg_desc: "*Excluir elementos.", btn_gen: "✨ Generar", lbl_result: "Prompt Final:", btn_copy: "COPIAR"
             },
             "pt": {
+                page_title: "Gerador de Prompts de Arte IA Grátis - Midjourney & Stable Diffusion",
                 nav_home: "Início", title: "Gerador de Prompts de Arte IA", desc: "Construtor avançado para Midjourney v6 e SD.",
                 btn_random: "Surpreenda-me (Aleatório)", lbl_subject: "Assunto", lbl_style: "Estilo", lbl_medium: "Material",
                 lbl_lighting: "Iluminação", lbl_palette: "Paleta", lbl_camera: "Câmera", lbl_magic: "✨ Melhoria Mágica",
@@ -393,6 +408,7 @@
                 lbl_neg_desc: "*Excluir elementos.", btn_gen: "✨ Gerar", lbl_result: "Prompt Final:", btn_copy: "COPIAR"
             },
             "fr": {
+                page_title: "Générateur de Prompts d'Art IA Gratuit - Midjourney & Stable Diffusion",
                 nav_home: "Accueil", title: "Générateur de Prompts d'Art IA", desc: "Constructeur avancé pour Midjourney v6 et SD.",
                 btn_random: "Surprenez-moi (Aléatoire)", lbl_subject: "Sujet", lbl_style: "Style", lbl_medium: "Matériel",
                 lbl_lighting: "Éclairage", lbl_palette: "Palette", lbl_camera: "Caméra", lbl_magic: "✨ Amélioration Magique",
@@ -400,6 +416,7 @@
                 lbl_neg_desc: "*Exclure des éléments.", btn_gen: "✨ Générer", lbl_result: "Prompt Final:", btn_copy: "COPIER"
             },
             "de": {
+                page_title: "Kostenloser AI Kunst Prompt Generator - Midjourney & Stable Diffusion",
                 nav_home: "Startseite", title: "AI Kunst Prompt Generator", desc: "Erweiterter Builder für Midjourney v6 und SD.",
                 btn_random: "Überraschen Sie mich", lbl_subject: "Betreff", lbl_style: "Stil", lbl_medium: "Material",
                 lbl_lighting: "Beleuchtung", lbl_palette: "Palette", lbl_camera: "Kamera", lbl_magic: "✨ Magische Verbesserung",
@@ -414,6 +431,11 @@
             
             const select = document.querySelector('.lang-switch');
             if(select) select.value = lang;
+            
+            // ★★★ 4. 更新分頁標題 ★★★
+            if (translations[lang]['page_title']) {
+                document.title = translations[lang]['page_title'];
+            }
             
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');

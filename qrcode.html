@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Generator - Free & Custom Color</title>
+    
+    <title>Free QR Code Generator - Custom Colors & High Quality (No Sign-up)</title>
+    
+    <meta name="description" content="Create custom QR codes for URLs, Wi-Fi, and text instantly. Customize colors and download high-quality PNGs. Free and no sign-up required.">
+    
+    <meta property="og:title" content="Free QR Code Generator (Custom Colors)">
+    <meta property="og:description" content="Create permanent QR codes for URLs and Wi-Fi instantly. Free & high quality.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mywebtoolboxhq.com/qrcode.html">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         :root { --primary: #0066cc; --bg: #f4f6f8; --white: #ffffff; }
@@ -189,42 +198,50 @@
     <script>
         const translations = {
             "en": {
+                // 4. 新增分頁標題設定
+                page_title: "Free QR Code Generator - Custom Colors & High Quality (No Sign-up)",
                 nav_home: "Home",
                 title: "QR Code Generator", desc: "Create your own custom QR Code with URL or text.",
                 label_fg: "Foreground:", label_bg: "Background:", btn_gen: "Generate QR Code",
                 preview: "Preview will appear here", btn_download: "Download Image"
             },
             "zh-TW": {
+                page_title: "免費 QR Code 產生器 - 自訂顏色 & 高解析度 (免註冊)",
                 nav_home: "首頁",
                 title: "線上 QR Code 生成器", desc: "輸入網址或文字，製作您的專屬二維碼。",
                 label_fg: "前景色：", label_bg: "背景色：", btn_gen: "產生 QR Code",
                 preview: "預覽將顯示於此", btn_download: "下載圖片"
             },
             "zh-CN": {
+                page_title: "免费二维码生成器 - 自定义颜色 & 高分辨率 (免注册)",
                 nav_home: "首页",
                 title: "在线二维码生成器", desc: "输入网址或文字，制作您的专属二维码。",
                 label_fg: "前景色：", label_bg: "背景色：", btn_gen: "生成二维码",
                 preview: "预览将显示于此", btn_download: "下载图片"
             },
             "es": {
+                page_title: "Generador Código QR Gratis - Colores Personalizados (Sin Registro)",
                 nav_home: "Inicio",
                 title: "Generador Código QR", desc: "Cree su propio código QR personalizado con URL o texto.",
                 label_fg: "Primer plano:", label_bg: "Fondo:", btn_gen: "Generar Código QR",
                 preview: "La vista previa aparecerá aquí", btn_download: "Descargar Imagen"
             },
             "pt": {
+                page_title: "Gerador de QR Code Grátis - Cores Personalizadas (Sem Registro)",
                 nav_home: "Início",
                 title: "Gerador de QR Code", desc: "Crie seu próprio QR Code personalizado com URL ou texto.",
                 label_fg: "Primeiro plano:", label_bg: "Fundo:", btn_gen: "Gerar QR Code",
                 preview: "A pré-visualização aparecerá aqui", btn_download: "Baixar Imagem"
             },
             "fr": {
+                page_title: "Générateur de Code QR Gratuit - Couleurs Personnalisées (Sans Inscription)",
                 nav_home: "Accueil",
                 title: "Générateur de Code QR", desc: "Créez votre propre code QR personnalisé avec URL ou texte.",
                 label_fg: "Premier plan :", label_bg: "Arrière-plan :", btn_gen: "Générer Code QR",
                 preview: "L'aperçu apparaîtra ici", btn_download: "Télécharger l'image"
             },
             "de": {
+                page_title: "Kostenloser QR-Code Generator - Eigene Farben (Ohne Anmeldung)",
                 nav_home: "Startseite",
                 title: "QR-Code Generator", desc: "Erstellen Sie Ihren eigenen benutzerdefinierten QR-Code mit URL oder Text.",
                 label_fg: "Vordergrund:", label_bg: "Hintergrund:", btn_gen: "QR-Code Erstellen",
@@ -239,6 +256,11 @@
             
             const select = document.querySelector('.lang-switch');
             if(select) select.value = lang;
+            
+            // ★★★ 4. 更新分頁標題 ★★★
+            if (translations[lang]['page_title']) {
+                document.title = translations[lang]['page_title'];
+            }
             
             // 介面翻譯
             document.querySelectorAll('[data-i18n]').forEach(el => {

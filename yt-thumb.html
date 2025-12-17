@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Thumbnail Downloader - 4K/HD</title>
+    
+    <title>Free YouTube Thumbnail Downloader - Save 4K & HD Images (No App)</title>
+    
+    <meta name="description" content="Download high-quality YouTube thumbnails in 4K, HD (1080p), and MaxRes. Free online tool, no registration or software installation required.">
+    
+    <meta property="og:title" content="Free YouTube Thumbnail Downloader (4K & HD)">
+    <meta property="og:description" content="One-click to grab high-quality thumbnails from any YouTube video. No install needed!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mywebtoolboxhq.com/yt-thumb.html">
+
     <style>
         :root { --primary: #0066cc; --bg: #f4f6f8; --white: #ffffff; }
         body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; color: #333; display: flex; flex-direction: column; min-height: 100vh;}
@@ -189,36 +198,44 @@
     <script>
         const translations = {
             "en": {
+                // 4. 新增分頁標題設定
+                page_title: "Free YouTube Thumbnail Downloader - Save 4K & HD Images (No App)",
                 nav_home: "Home",
                 title: "YouTube Thumbnail Downloader", desc: "Enter YouTube URL to get the highest quality thumbnail.",
                 btn_get: "Get Thumbnail", note_save: "Note: If download fails, right-click image and 'Save As'."
             },
             "zh-TW": {
+                page_title: "免費 YouTube 封面圖下載器 - 4K/HD 高畫質 (免安裝)",
                 nav_home: "首頁",
                 title: "YouTube 影片縮圖下載器", desc: "輸入 YouTube 網址，獲取最高畫質封面圖。",
                 btn_get: "獲取縮圖", note_save: "注意：若無法下載，請對圖片按右鍵選「另存圖片」。"
             },
             "zh-CN": {
+                page_title: "免费 YouTube 封面图下载器 - 4K/HD 高画质 (免安装)",
                 nav_home: "首页",
                 title: "YouTube 视频封面下载器", desc: "输入 YouTube 网址，获取最高画质封面图。",
                 btn_get: "获取封面", note_save: "注意：若无法下载，请对图片按右键选「另存图片」。"
             },
             "es": {
+                page_title: "Descargador de Miniaturas YT - Gratis 4K y HD",
                 nav_home: "Inicio",
                 title: "Descargador de Miniaturas YT", desc: "Ingrese la URL de YouTube para obtener la miniatura de mayor calidad.",
                 btn_get: "Obtener Miniatura", note_save: "Nota: Si falla la descarga, clic derecho en la imagen y 'Guardar como'."
             },
             "pt": {
+                page_title: "Baixar Miniatura do YouTube - Grátis 4K e HD",
                 nav_home: "Início",
                 title: "Baixar Miniatura do YouTube", desc: "Insira a URL do YouTube para obter a miniatura de maior qualidade.",
                 btn_get: "Obter Miniatura", note_save: "Nota: Se o download falhar, clique com o botão direito e 'Salvar como'."
             },
             "fr": {
+                page_title: "Téléchargeur Miniature YouTube - Gratuit 4K & HD",
                 nav_home: "Accueil",
                 title: "Téléchargeur Miniature YouTube", desc: "Entrez l'URL YouTube pour obtenir la miniature en haute qualité.",
                 btn_get: "Obtenir la Miniature", note_save: "Note : Si le téléchargement échoue, clic droit et 'Enregistrer sous'."
             },
             "de": {
+                page_title: "YouTube Thumbnail Downloader - Kostenlos 4K & HD",
                 nav_home: "Startseite",
                 title: "YouTube Thumbnail Downloader", desc: "Geben Sie die YouTube-URL ein, um das Thumbnail in höchster Qualität zu erhalten.",
                 btn_get: "Thumbnail Laden", note_save: "Hinweis: Rechtsklick auf das Bild und 'Speichern unter', falls der Download fehlschlägt."
@@ -232,6 +249,11 @@
             
             const select = document.querySelector('.lang-switch');
             if(select) select.value = lang;
+            
+            // ★★★ 4. 更新分頁標題 ★★★
+            if (translations[lang]['page_title']) {
+                document.title = translations[lang]['page_title'];
+            }
             
             // 介面翻譯
             document.querySelectorAll('[data-i18n]').forEach(el => {

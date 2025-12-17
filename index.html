@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyToolBox - Free Online Tools Collection</title>
+    
+    <title>Free Online Tools Collection - M3U Player, AI Prompts & More (No Install)</title>
+    
+    <meta name="description" content="Access 9 free online tools: M3U Player, AI Prompt Generator, YouTube Thumbnail Downloader, and more. No installation or login required. Privacy-friendly.">
+    
+    <meta property="og:title" content="Free Online Tools Collection (9-in-1 ToolBox)">
+    <meta property="og:description" content="Free tools: M3U Player, AI Prompts, YT Thumbnails, and more. No install needed!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mywebtoolboxhq.com/">
+
     <style>
         :root { --primary: #0066cc; --bg: #f4f6f8; --white: #ffffff; }
         body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; color: #333; display: flex; flex-direction: column; min-height: 100vh;}
@@ -120,6 +129,8 @@
     <script>
         const translations = {
             "en": {
+                // 4. 新增各語言的頁面標題
+                page_title: "Free Online Tools Collection - M3U Player, AI Prompts & More (No Install)",
                 nav_home: "Home",
                 main_title: "Online Tools Collection", main_desc: "Free, fast, and privacy-friendly tools for everyone.",
                 tool_m3u_title: "M3U ToolBox", tool_m3u_desc: "Web Player & Playlist Converter in one place.",
@@ -133,6 +144,7 @@
                 tool_ai_title: "AI Art Prompt Generator", tool_ai_desc: "Create perfect prompts for Midjourney & Stable Diffusion."
             },
             "zh-TW": {
+                page_title: "免費線上工具箱 - M3U 播放器、AI 繪圖提示詞 (免安裝)",
                 nav_home: "首頁",
                 main_title: "線上工具箱", main_desc: "免費、快速且重視隱私的實用工具集合。",
                 tool_m3u_title: "M3U 工具箱", tool_m3u_desc: "線上播放器與格式轉換器二合一。",
@@ -146,6 +158,7 @@
                 tool_ai_title: "AI 繪圖提示詞生成器", tool_ai_desc: "為 Midjourney 和 Stable Diffusion 產生完美的咒語。"
             },
             "zh-CN": {
+                page_title: "免费在线工具箱 - M3U 播放器、AI 绘图提示词 (免安装)",
                 nav_home: "首页",
                 main_title: "在线工具箱", main_desc: "免费、快速且重视隐私的实用工具集合。",
                 tool_m3u_title: "M3U 工具箱", tool_m3u_desc: "在线播放器与格式转换器二合一。",
@@ -159,6 +172,7 @@
                 tool_ai_title: "AI 绘图提示词生成器", tool_ai_desc: "为 Midjourney 和 Stable Diffusion 产生完美的咒语。"
             },
             "es": {
+                page_title: "Colección de Herramientas Online Gratis - M3U, IA y Más",
                 nav_home: "Inicio",
                 main_title: "Colección de Herramientas", main_desc: "Herramientas gratuitas, rápidas y privadas.",
                 tool_m3u_title: "Caja de Herramientas M3U", tool_m3u_desc: "Reproductor y convertidor en uno.",
@@ -172,6 +186,7 @@
                 tool_ai_title: "Generador de Prompts de Arte IA", tool_ai_desc: "Crea prompts perfectos para arte IA."
             },
             "pt": {
+                page_title: "Coleção de Ferramentas Online Grátis - M3U, IA e Mais",
                 nav_home: "Início",
                 main_title: "Coleção de Ferramentas", main_desc: "Ferramentas gratuitas, rápidas e privadas.",
                 tool_m3u_title: "Caixa de Ferramentas M3U", tool_m3u_desc: "Player e conversor em um só lugar.",
@@ -185,6 +200,7 @@
                 tool_ai_title: "Gerador de Prompts de Arte IA", tool_ai_desc: "Crie prompts perfeitos para arte IA."
             },
             "fr": {
+                page_title: "Boîte à Outils en Ligne Gratuite - M3U, IA et Plus",
                 nav_home: "Accueil",
                 main_title: "Boîte à Outils en Ligne", main_desc: "Outils gratuits, rapides et respectueux de la vie privée.",
                 tool_m3u_title: "Boîte à Outils M3U", tool_m3u_desc: "Lecteur et convertisseur réunis.",
@@ -198,6 +214,7 @@
                 tool_ai_title: "Générateur de Prompts d'Art IA", tool_ai_desc: "Créez des prompts parfaits pour l'art IA."
             },
             "de": {
+                page_title: "Kostenlose Online-Tools Sammlung - M3U, AI und Mehr",
                 nav_home: "Startseite",
                 main_title: "Online-Tools Sammlung", main_desc: "Kostenlose, schnelle und datenschutzfreundliche Tools.",
                 tool_m3u_title: "M3U Toolbox", tool_m3u_desc: "Player und Konverter an einem Ort.",
@@ -218,6 +235,11 @@
             
             const select = document.querySelector('.lang-switch');
             if(select) select.value = lang;
+            
+            // 4. 更新標題的指令
+            if (translations[lang]['page_title']) {
+                document.title = translations[lang]['page_title'];
+            }
             
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');

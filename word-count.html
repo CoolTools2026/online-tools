@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Word Counter & Character Count Tool</title>
+    
+    <title>Free Word Counter Tool - Characters, Words & Paragraphs</title>
+    
+    <meta name="description" content="Free online word counter and character count tool. Calculate words, characters, sentences, and paragraphs in real-time. No sign-up required.">
+    
+    <meta property="og:title" content="Free Online Word Counter">
+    <meta property="og:description" content="Count words, characters, and paragraphs instantly. Free & fast.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mywebtoolboxhq.com/word-count.html">
+
     <style>
         :root { --primary: #0066cc; --bg: #f4f6f8; --white: #ffffff; }
         body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; color: #333; display: flex; flex-direction: column; min-height: 100vh;}
@@ -189,42 +198,50 @@
     <script>
         const translations = {
             "en": {
+                // 4. 新增分頁標題設定
+                page_title: "Free Word Counter Tool - Characters, Words & Paragraphs",
                 nav_home: "Home",
                 title: "Word Counter", desc: "Count words, characters, and paragraphs in real-time.",
                 lbl_words: "Words", lbl_chars: "Characters", lbl_paras: "Paragraphs",
                 btn_clear: "Clear Text"
             },
             "zh-TW": {
+                page_title: "免費線上字數計算器 - 即時統計字數與字元 (免安裝)",
                 nav_home: "首頁",
                 title: "字數計算器", desc: "即時計算文字的字數、字元數和段落數。",
                 lbl_words: "字數", lbl_chars: "字元數", lbl_paras: "段落",
                 btn_clear: "清空內容"
             },
             "zh-CN": {
+                page_title: "免费在线字数计算器 - 即时统计字数与字符 (免安装)",
                 nav_home: "首页",
                 title: "字数计算器", desc: "即时计算文字的字数、字符数和段落数。",
                 lbl_words: "字数", lbl_chars: "字符数", lbl_paras: "段落",
                 btn_clear: "清空内容"
             },
             "es": {
+                page_title: "Contador de Palabras Online Gratis - Caracteres y Párrafos",
                 nav_home: "Inicio",
                 title: "Contador de Palabras", desc: "Cuente palabras, caracteres y párrafos en tiempo real.",
                 lbl_words: "Palabras", lbl_chars: "Caracteres", lbl_paras: "Párrafos",
                 btn_clear: "Borrar Texto"
             },
             "pt": {
+                page_title: "Contador de Palavras Online Grátis - Caracteres e Parágrafos",
                 nav_home: "Início",
                 title: "Contador de Palavras", desc: "Conte palavras, caracteres e parágrafos em tempo real.",
                 lbl_words: "Palavras", lbl_chars: "Caracteres", lbl_paras: "Parágrafos",
                 btn_clear: "Limpar Texto"
             },
             "fr": {
+                page_title: "Compteur de Mots en Ligne Gratuit - Caractères et Paragraphes",
                 nav_home: "Accueil",
                 title: "Compteur de Mots", desc: "Comptez les mots, caractères et paragraphes en temps réel.",
                 lbl_words: "Mots", lbl_chars: "Caractères", lbl_paras: "Paragraphes",
                 btn_clear: "Effacer"
             },
             "de": {
+                page_title: "Kostenloser Wortzähler Online - Zeichen und Absätze",
                 nav_home: "Startseite",
                 title: "Wortzähler", desc: "Zählen Sie Wörter, Zeichen und Absätze in Echtzeit.",
                 lbl_words: "Wörter", lbl_chars: "Zeichen", lbl_paras: "Absätze",
@@ -238,6 +255,11 @@
             
             const select = document.querySelector('.lang-switch');
             if(select) select.value = lang;
+            
+            // ★★★ 4. 更新分頁標題 ★★★
+            if (translations[lang]['page_title']) {
+                document.title = translations[lang]['page_title'];
+            }
             
             // 介面翻譯
             document.querySelectorAll('[data-i18n]').forEach(el => {
