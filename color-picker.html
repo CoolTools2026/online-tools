@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Color Picker - Get HEX, RGB from Image</title>
+    
+    <title>Image Color Picker - Get HEX & RGB Codes Online (No Upload)</title>
+    
+    <meta name="description" content="Upload an image and pick colors to get exact HEX, RGB codes instantly. Free online tool, runs locally in your browser (privacy-friendly).">
+    
+    <meta property="og:title" content="Free Image Color Picker (HEX & RGB)">
+    <meta property="og:description" content="Pick colors from any image instantly. Get HEX/RGB codes. Privacy-friendly.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mywebtoolboxhq.com/color-picker.html">
+
     <style>
         :root { --primary: #0066cc; --bg: #f4f6f8; --white: #ffffff; }
         body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; color: #333; display: flex; flex-direction: column; min-height: 100vh;}
@@ -182,13 +191,35 @@
 
     <script>
         const translations = {
-            "en": { nav_home: "Home", title: "Image Color Picker", desc: "Upload an image and click anywhere to get the color code.", upload_text: "Click to Upload Image" },
-            "zh-TW": { nav_home: "首頁", title: "圖片吸色工具", desc: "上傳圖片並點擊任一處以獲取顏色代碼。", upload_text: "點擊上傳圖片" },
-            "zh-CN": { nav_home: "首页", title: "图片吸色工具", desc: "上传图片并点击任一处以获取颜色代码。", upload_text: "点击上传图片" },
-            "es": { nav_home: "Inicio", title: "Selector de Color", desc: "Sube una imagen y haz clic para obtener el color.", upload_text: "Subir imagen" },
-            "pt": { nav_home: "Início", title: "Seletor de Cores", desc: "Carregue uma imagem e clique para obter a cor.", upload_text: "Carregar imagem" },
-            "fr": { nav_home: "Accueil", title: "Sélecteur de Couleur", desc: "Téléchargez une image et cliquez pour obtenir la couleur.", upload_text: "Télécharger l'image" },
-            "de": { nav_home: "Startseite", title: "Farbpicker", desc: "Laden Sie ein Bild hoch und klicken Sie, um die Farbe zu erhalten.", upload_text: "Bild hochladen" }
+            "en": {
+                // 4. 新增分頁標題設定
+                page_title: "Image Color Picker - Get HEX & RGB Codes Online (No Upload)",
+                nav_home: "Home", title: "Image Color Picker", desc: "Upload an image and click anywhere to get the color code.", upload_text: "Click to Upload Image"
+            },
+            "zh-TW": {
+                page_title: "線上圖片吸色工具 - 快速取得 HEX & RGB 色碼 (免上傳)",
+                nav_home: "首頁", title: "圖片吸色工具", desc: "上傳圖片並點擊任一處以獲取顏色代碼。", upload_text: "點擊上傳圖片"
+            },
+            "zh-CN": {
+                page_title: "在线图片吸色工具 - 快速获取 HEX & RGB 色码 (免上传)",
+                nav_home: "首页", title: "图片吸色工具", desc: "上传图片并点击任一处以获取颜色代码。", upload_text: "点击上传图片"
+            },
+            "es": {
+                page_title: "Selector de Color de Imagen - Obtener HEX y RGB Online",
+                nav_home: "Inicio", title: "Selector de Color", desc: "Sube una imagen y haz clic para obtener el color.", upload_text: "Subir imagen"
+            },
+            "pt": {
+                page_title: "Seletor de Cores de Imagem - Obter HEX e RGB Online",
+                nav_home: "Início", title: "Seletor de Cores", desc: "Carregue uma imagem e clique para obter a cor.", upload_text: "Carregar imagem"
+            },
+            "fr": {
+                page_title: "Sélecteur de Couleur d'Image - Obtenir HEX et RGB en Ligne",
+                nav_home: "Accueil", title: "Sélecteur de Couleur", desc: "Téléchargez une image et cliquez pour obtenir la couleur.", upload_text: "Télécharger l'image"
+            },
+            "de": {
+                page_title: "Farbpicker aus Bild - HEX & RGB Codes Online Abrufen",
+                nav_home: "Startseite", title: "Farbpicker", desc: "Laden Sie ein Bild hoch und klicken Sie, um die Farbe zu erhalten.", upload_text: "Bild hochladen"
+            }
         };
 
         function setLanguage(lang) {
@@ -197,6 +228,11 @@
             
             const select = document.querySelector('.lang-switch');
             if(select) select.value = lang;
+            
+            // ★★★ 4. 更新分頁標題 ★★★
+            if (translations[lang]['page_title']) {
+                document.title = translations[lang]['page_title'];
+            }
             
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
